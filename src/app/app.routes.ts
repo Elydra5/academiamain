@@ -13,7 +13,7 @@ export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'forgot-password', component: Forgotpasswd},
     {path: 'students', component: Students},
-    {path: 'students/:id', component: Student},
+    {path: 'student/:id', component: Student},
     {path: 'groups', component: Groups},
     {path: 'groups/:id', component: Group},
     {path: 'attendance', component: Attendance},

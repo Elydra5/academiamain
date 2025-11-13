@@ -5,15 +5,17 @@ import { Students } from './students/students';
 import { Groups } from './groups/groups';
 import { Attendance } from './attendance/attendance';
 import { Billing } from './billing/billing';
+import { Group } from './group/group';
+import { Student } from './student/student';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full' },
     {path: 'login', component: Login},
     {path: 'forgot-password', component: Forgotpasswd},
     {path: 'students', component: Students},
-    {path: 'students/:id', component: Students},
+    {path: 'students/:id', component: Student},
     {path: 'groups', component: Groups},
-    {path: 'groups/:id', component: Groups},
+    {path: 'groups/:id', component: Group},
     {path: 'attendance', component: Attendance},
     {path: 'attendance/:id', component: Attendance},
     {path: 'billing', component: Billing},

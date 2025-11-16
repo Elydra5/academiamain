@@ -1,53 +1,78 @@
-<article class="student-card" aria-label="Student card">
-  <div class="student-left">
-    <div class="student-avatar" aria-hidden="true">
-      {{ (exampleStudent.first_name.charAt(0) || '') + (exampleStudent.last_name.charAt(0) || '') }}
-    </div>
-  </div>
-
-  <div class="student-main">
-    <div class="student-header">
+<div class="page-container">
+  <div class="header">
+    <div class="header-content">
       <div>
-        <h3 class="student-name">{{ exampleStudent.first_name }} {{ exampleStudent.last_name }}</h3>
-        <div class="student-sub">Major: {{ exampleStudent.major }}</div>
-        <div class="student-sub">Enrolled: <time>{{ exampleStudent.enrollment_date }}</time></div>
+        <button class="back-btn" (click)="router.navigate(['/students'])" title="Back to Students">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15,18 9,12 15,6"/>
+          </svg>
+        </button>
+        <h1 class="title">Student Details</h1>
+        <p class="subtitle">View and manage student information</p>
       </div>
-      <div class="student-actions" role="group" aria-label="Actions">
-        <button class="action-btn edit" title="Szerkesztés" aria-label="Szerkesztés" (click)="onEdit(exampleStudent)">
+      <div class="header-actions" role="group" aria-label="Actions">
+        <button class="action-btn edit" title="Edit" aria-label="Edit" (click)="onEdit(student)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
           </svg>
+          Edit
         </button>
-        <button class="action-btn delete" title="Törlés" aria-label="Törlés" (click)="onDelete(exampleStudent)">
+        <button class="action-btn delete" title="Delete" aria-label="Delete" (click)="onDelete(student)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3,6 5,6 21,6"/>
             <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
             <line x1="10" y1="11" x2="10" y2="17"/>
             <line x1="14" y1="11" x2="14" y2="17"/>
           </svg>
+          Delete
         </button>
       </div>
     </div>
+  </div>
 
-    <div class="student-body">
-      <div class="student-contact">
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
+  <div class="student-detail-card">
+    <div class="student-header-section">
+      <div class="student-header-info">
+        <h2 class="student-name-large">{{ student.first_name }} {{ student.last_name }}</h2>
+        <div class="student-meta-badge">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          <span>{{ exampleStudent.email }}</span>
-        </div>
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-          </svg>
-          <span>{{ exampleStudent.phone_number }}</span>
+          <span>Enrolled: {{ formatDate(student.enrollment_date) }}</span>
         </div>
       </div>
     </div>
+
+    <div class="student-details-section">
+      <div class="detail-row">
+        <div class="detail-label">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span>Phone</span>
+        </div>
+        <div class="detail-value">{{ student.phone }}</div>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-label">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Enrollment Date</span>
+        </div>
+        <div class="detail-value">{{ formatDate(student.enrollment_date) }}</div>
+      </div>
+    </div>
   </div>
-</article>
+</div>
 
 <div class="modal-overlay" [class.active]="isEditModalOpen" (click)="onCancel()">
   <div class="modal-content" (click)="$event.stopPropagation()">
@@ -70,16 +95,8 @@
         <input id="lastName" type="text" [(ngModel)]="editingStudent.last_name" class="form-input">
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" [(ngModel)]="editingStudent.email" class="form-input">
-      </div>
-      <div class="form-group">
         <label for="phone">Phone Number</label>
-        <input id="phone" type="text" [(ngModel)]="editingStudent.phone_number" class="form-input">
-      </div>
-      <div class="form-group">
-        <label for="major">Major</label>
-        <input id="major" type="text" [(ngModel)]="editingStudent.major" class="form-input">
+        <input id="phone" type="text" [(ngModel)]="editingStudent.phone" class="form-input">
       </div>
       <div class="form-group">
         <label for="enrollmentDate">Enrollment Date</label>

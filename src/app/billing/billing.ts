@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-billing',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './billing.html',
   styleUrl: './billing.css',
 })
-export class Billing {
-
+export class Billing implements OnInit {
+  ngOnInit() {
+    // TODO: Implement billing logic
+  }
 }

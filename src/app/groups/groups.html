@@ -1,1 +1,61 @@
-<p>groups works!</p>
+<div class="page-container">
+  <div class="header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="title">Groups</h1>
+        <p class="subtitle">Manage and view all student groups</p>
+      </div>
+      <button class="add-btn" (click)="openCreateModal()" title="Add New Group">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Group
+      </button>
+    </div>
+  </div>
+
+  <div class="groups-grid">
+    <div 
+      *ngFor="let group of groups" 
+      class="group-card" 
+      (click)="onGroupClick(group.id)"
+      role="button"
+      tabindex="0"
+    >
+      <div class="group-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      
+      <div class="group-info">
+        <h3 class="group-name">{{ group.name }}</h3>
+        <p class="group-description">{{ group.description || 'No description' }}</p>
+        <div class="group-meta">
+          <span class="meta-item">{{ group.studentCount || 0 }} students</span>
+        </div>
+      </div>
+
+      <div class="arrow-icon">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9,18 15,12 9,6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="groups.length === 0" class="empty-state">
+    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    <h3>No groups found</h3>
+    <p>Get started by adding your first group</p>
+  </div>
+</div>

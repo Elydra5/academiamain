@@ -19,6 +19,16 @@ export class Groups implements OnInit {
   ) {}
 
   groups: any[] = [];
+  isCreateModalOpen = false;
+  newGroup: any = {
+    name: '',
+    short_description: '',
+    moodle_id: '',
+    end_date: '',
+    status: '',
+    teacher: '',
+    long_description: ''
+  };
 
   ngOnInit() {
     this.loadGroups();
@@ -41,7 +51,43 @@ export class Groups implements OnInit {
   }
 
   openCreateModal() {
-    // TODO: Implement create modal
-    console.log('Create group modal');
+    this.newGroup = {
+      name: '',
+      short_description: '',
+      moodle_id: '',
+      end_date: '',
+      status: '',
+      teacher: '',
+      long_description: ''
+    };
+    this.isCreateModalOpen = true;
+  }
+
+  onCreateGroup() {
+    this.http.post(this.apiUrl, this.newGroup).subscribe({
+      next: (createdGroup: any) => {
+        this.groups.push(createdGroup);
+        this.isCreateModalOpen = false;
+        console.log('[groups] created', createdGroup);
+        this.loadGroups();
+      },
+      error: (error) => {
+        console.error('Error creating group:', error);
+        alert('Error creating group. Please try again.');
+      }
+    });
+  }
+
+  onCancelCreate() {
+    this.isCreateModalOpen = false;
+    this.newGroup = {
+      name: '',
+      short_description: '',
+      moodle_id: '',
+      end_date: '',
+      status: '',
+      teacher: '',
+      long_description: ''
+    };
   }
 }

@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-student',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './student.html',
   styleUrl: './student.css',
 })
@@ -18,7 +19,8 @@ export class Student implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     public router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   student: any = {
@@ -123,7 +125,7 @@ export class Student implements OnInit {
       },
       error: (error) => {
         console.error('Error updating student:', error);
-        alert('Error updating student. Please try again.');
+        alert(this.translate.instant('COMMON.ERROR') + ': ' + this.translate.instant('STUDENT.EDIT_STUDENT'));
       }
     });
   }
@@ -135,25 +137,26 @@ export class Student implements OnInit {
 
   onDelete(studentToDelete?: any) {
     const s = studentToDelete ?? this.student;
-    const confirmed = confirm(`Are you sure you want to delete ${s.first_name} ${s.last_name}?`);
+    const deleteMessage = `${this.translate.instant('STUDENT.DELETE_CONFIRM')} ${s.first_name} ${s.last_name}?`;
+    const confirmed = confirm(deleteMessage);
     if (!confirmed) return;
 
     this.http.delete(`${this.apiUrl}/${s.id}`).subscribe({
       next: () => {
         console.log('[student] deleted', s);
-        alert('Student deleted successfully');
+        alert(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/students']);
       },
       error: (error) => {
         console.error('Error deleting student:', error);
-        alert('Error deleting student. Please try again.');
+        alert(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
 
   onEnrollInGroup() {
     if (!this.selectedGroupId || !this.student?.id) {
-      this.enrollError = 'Please select a group first.';
+      this.enrollError = this.translate.instant('STUDENT.SELECT_GROUP');
       this.enrollSuccess = '';
       return;
     }
@@ -165,12 +168,12 @@ export class Student implements OnInit {
 
     this.http.post(url, {}).subscribe({
       next: () => {
-        this.enrollSuccess = 'Student enrolled to the group successfully.';
+        this.enrollSuccess = this.translate.instant('STUDENT.ENROLL_SUCCESS');
         this.isEnrolling = false;
       },
       error: (error) => {
         console.error('Error enrolling student to group:', error);
-        this.enrollError = error.error?.message || 'Failed to enroll student. Please try again.';
+        this.enrollError = error.error?.message || this.translate.instant('STUDENT.ENROLL_ERROR');
         this.isEnrolling = false;
       }
     });

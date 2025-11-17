@@ -2,24 +2,24 @@
   <div class="header">
     <div class="header-content">
       <div class="header-text">
-        <h1 class="title">Students</h1>
-        <p class="subtitle">Manage and view all enrolled students</p>
+        <h1 class="title">{{ 'STUDENTS.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'STUDENTS.SUBTITLE' | translate }}</p>
       </div>
       <div class="header-actions">
         <div class="page-size-selector">
-          <label for="pageSize">Show:</label>
+          <label for="pageSize">{{ 'STUDENTS.SHOW' | translate }}</label>
           <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-size-select">
             @for (size of pageSizeOptions; track size) {
               <option [value]="size">{{ size }}</option>
             }
           </select>
         </div>
-        <button class="add-btn" (click)="openCreateModal()" title="Add New Student">
+        <button class="add-btn" (click)="openCreateModal()" [title]="'STUDENTS.ADD_STUDENT' | translate">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
-          Add Student
+          {{ 'STUDENTS.ADD_STUDENT' | translate }}
         </button>
       </div>
     </div>
@@ -69,15 +69,15 @@
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
-      <h3>No students found</h3>
-      <p>Get started by adding your first student</p>
+      <h3>{{ 'STUDENTS.NO_STUDENTS' | translate }}</h3>
+      <p>{{ 'STUDENTS.GET_STARTED' | translate }}</p>
     </div>
   }
 
   @if (students.length > 0 && totalPages > 1) {
     <div class="pagination-container">
       <div class="pagination-info">
-        Showing {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, students.length) }} of {{ students.length }} students
+        {{ 'STUDENTS.SHOWING' | translate }} {{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, students.length) }} {{ 'STUDENTS.OF' | translate }} {{ students.length }} {{ 'STUDENTS.STUDENTS_LOWER' | translate }}
       </div>
       <div class="pagination">
         <button 
@@ -132,8 +132,8 @@
 <div class="modal-overlay" [class.active]="isCreateModalOpen" (click)="onCancelCreate()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Add New Student</h3>
-      <button class="close-btn" (click)="onCancelCreate()" title="Close">
+      <h3>{{ 'STUDENTS.ADD_STUDENT' | translate }}</h3>
+      <button class="close-btn" (click)="onCancelCreate()" [title]="'COMMON.CLOSE' | translate">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -142,21 +142,21 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="createFirstName">First Name</label>
+        <label for="createFirstName">{{ 'STUDENTS.FIRST_NAME' | translate }}</label>
         <input id="createFirstName" type="text" [(ngModel)]="newStudent.first_name" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="createLastName">Last Name</label>
+        <label for="createLastName">{{ 'STUDENTS.LAST_NAME' | translate }}</label>
         <input id="createLastName" type="text" [(ngModel)]="newStudent.last_name" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="createPhone">Phone Number</label>
+        <label for="createPhone">{{ 'STUDENTS.PHONE_NUMBER' | translate }}</label>
         <input id="createPhone" type="text" [(ngModel)]="newStudent.phone" class="form-input">
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="onCancelCreate()">Cancel</button>
-      <button class="btn btn-primary" (click)="onCreateStudent()">Create Student</button>
+      <button class="btn btn-secondary" (click)="onCancelCreate()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onCreateStudent()">{{ 'STUDENTS.CREATE_STUDENT' | translate }}</button>
     </div>
   </div>
 </div>

@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -37,7 +38,6 @@ export class Login implements OnInit {
   };
 
   ngOnInit() {
-    // If already authenticated, redirect to students page
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['/students']);
       return;
@@ -68,11 +68,9 @@ export class Login implements OnInit {
       next: (response: any) => {
         console.log('Login successful:', response);
         
-        // Extract JWT token from response
         const token = response.token || response.access_token || response.jwt;
         
         if (token) {
-          // Save token to localStorage via AuthService
           this.authService.setToken(token);
           this.isLoading = false;
           this.router.navigate(['/students']);

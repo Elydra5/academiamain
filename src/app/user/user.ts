@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslateModule],
   templateUrl: './user.html',
   styleUrl: './user.css',
 })
@@ -17,7 +18,8 @@ export class User implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     public router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   user: any = {
@@ -101,12 +103,11 @@ export class User implements OnInit {
         this.user = { ...updatedUser };
         this.isEditModalOpen = false;
         console.log('[user] saved', updatedUser);
-        // Reload user data to ensure we have the latest
         this.loadUser(this.user.username);
       },
       error: (error) => {
         console.error('Error updating user:', error);
-        alert('Error updating user. Please try again.');
+        alert(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
@@ -119,25 +120,26 @@ export class User implements OnInit {
   onDelete(userToDelete?: any) {
     const u = userToDelete ?? this.user;
     const name = u.first_name && u.last_name ? `${u.first_name} ${u.last_name}` : u.username;
-    const confirmed = confirm(`Are you sure you want to delete user ${name}?`);
+    const deleteMessage = `${this.translate.instant('USER.DELETE_CONFIRM')} ${name}?`;
+    const confirmed = confirm(deleteMessage);
     if (!confirmed) return;
 
     const url = `${this.apiUrl}/${u.username}`;
     this.http.delete(url).subscribe({
       next: () => {
         console.log('[user] deleted', u);
-        alert('User deleted successfully');
+        alert(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/users']);
       },
       error: (error) => {
         console.error('Error deleting user:', error);
-        alert('Error deleting user. Please try again.');
+        alert(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
 
   formatDate(dateString: string | null): string {
-    if (!dateString) return 'Never';
+    if (!dateString) return this.translate.instant('USER.NEVER');
     try {
       const date = new Date(dateString);
       return date.toLocaleDateString('en-US', { 
@@ -153,6 +155,6 @@ export class User implements OnInit {
   }
 
   getStatusText(status: number): string {
-    return status === 1 ? 'Active' : 'Inactive';
+    return status === 1 ? this.translate.instant('USER.ACTIVE') : this.translate.instant('USER.INACTIVE');
   }
 }

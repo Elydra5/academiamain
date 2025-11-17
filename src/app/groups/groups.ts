@@ -3,10 +3,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-groups',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './groups.html',
   styleUrl: './groups.css',
 })
@@ -39,7 +41,58 @@ export class Groups implements OnInit {
   loadGroups() {
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: (groups) => {
-        this.groups = groups;
+        const basicGroups = (groups || [])
+          .map((group: any) => ({
+            id: group.id,
+            name: group.name || '',
+            short_description: '',
+            moodle_id: null,
+            start_date: '',
+            end_date: '',
+            status: '',
+            teacher: '',
+            long_description: '',
+            studentCount: 0
+          }))
+          .filter((group: any) => group.id !== null && group.id !== undefined && group.id !== '');
+        
+        const groupDetailRequests = basicGroups.map((group: any) =>
+          this.http.get<any>(`${this.apiUrl}/${group.id}`)
+        );
+        
+        if (groupDetailRequests.length === 0) {
+          this.groups = [];
+          return;
+        }
+        
+        forkJoin(groupDetailRequests).subscribe({
+          next: (groupDetails) => {
+            this.groups = basicGroups.map((group: any, index: number) => {
+              const detail = groupDetails[index];
+              if (detail && detail.groupInfo) {
+                const students = detail.students || [];
+                return {
+                  ...group,
+                  id: detail.groupInfo.id || group.id,
+                  name: detail.groupInfo.name || group.name,
+                  short_description: detail.groupInfo.short_description || '',
+                  moodle_id: detail.groupInfo.moodle_id || null,
+                  start_date: detail.groupInfo.start_date || '',
+                  end_date: detail.groupInfo.end_date || '',
+                  status: detail.groupInfo.status || '',
+                  teacher: detail.groupInfo.teacher || '',
+                  long_description: detail.groupInfo.long_description || '',
+                  studentCount: students.length
+                };
+              }
+              return group;
+            });
+          },
+          error: (error) => {
+            console.error('Error loading group details:', error);
+            this.groups = basicGroups;
+          }
+        });
       },
       error: (error) => {
         console.error('Error loading groups:', error);
@@ -60,8 +113,10 @@ export class Groups implements OnInit {
     });
   }
 
-  onGroupClick(groupId: number) {
-    this.router.navigate(['/groups', groupId]);
+  onGroupClick(groupId: number | undefined | null) {
+    if (groupId != null && groupId !== undefined) {
+      this.router.navigate(['/groups', groupId]);
+    }
   }
 
   openCreateModal() {

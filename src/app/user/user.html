@@ -2,29 +2,29 @@
   <div class="header">
     <div class="header-content">
       <div>
-        <button class="back-btn" (click)="router.navigate(['/users'])" title="Back to Users">
+        <button class="back-btn" (click)="router.navigate(['/users'])" [title]="'USER.BACK' | translate">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15,18 9,12 15,6"/>
           </svg>
         </button>
-        <h1 class="title">User Details</h1>
-        <p class="subtitle">View and manage user information</p>
+        <h1 class="title">{{ 'USER.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'USER.SUBTITLE' | translate }}</p>
       </div>
       <div class="header-actions" role="group" aria-label="Actions">
-        <button class="action-btn edit" title="Edit" aria-label="Edit" (click)="onEdit(user)">
+        <button class="action-btn edit" [title]="'USER.EDIT' | translate" [attr.aria-label]="'USER.EDIT' | translate" (click)="onEdit(user)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
           </svg>
-          Edit
+          {{ 'USER.EDIT' | translate }}
         </button>
-        <button class="action-btn delete" title="Delete" aria-label="Delete" (click)="onDelete(user)">
+        <button class="action-btn delete" [title]="'USER.DELETE' | translate" [attr.aria-label]="'USER.DELETE' | translate" (click)="onDelete(user)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3,6 5,6 21,6"/>
             <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
             <line x1="10" y1="11" x2="10" y2="17"/>
             <line x1="14" y1="11" x2="14" y2="17"/>
           </svg>
-          Delete
+          {{ 'USER.DELETE' | translate }}
         </button>
       </div>
     </div>
@@ -46,7 +46,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-            <span>Role: {{ user.role || 'User' }}</span>
+            <span>{{ 'USER.ROLE_LABEL' | translate }} {{ user.role || ('USER.USER' | translate) }}</span>
           </div>
           <div class="user-meta-badge" [class.status-active]="user.status === 1" [class.status-inactive]="user.status !== 1">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -65,7 +65,7 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
-          <span>Username</span>
+          <span>{{ 'USER.USERNAME' | translate }}</span>
         </div>
         <div class="detail-value">{{ user.username }}</div>
       </div>
@@ -76,9 +76,9 @@
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          <span>Email</span>
+          <span>{{ 'USER.EMAIL' | translate }}</span>
         </div>
-        <div class="detail-value">{{ user.email || 'No email' }}</div>
+        <div class="detail-value">{{ user.email || ('USERS.NO_EMAIL' | translate) }}</div>
       </div>
 
       <div class="detail-row">
@@ -88,9 +88,9 @@
             <path d="M2 17l10 5 10-5"/>
             <path d="M2 12l10 5 10-5"/>
           </svg>
-          <span>Role</span>
+          <span>{{ 'USER.ROLE' | translate }}</span>
         </div>
-        <div class="detail-value">{{ user.role || 'User' }}</div>
+        <div class="detail-value">{{ user.role || ('USER.USER' | translate) }}</div>
       </div>
 
       @if (user.first_name || user.last_name) {
@@ -100,7 +100,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-            <span>First Name</span>
+            <span>{{ 'USER.FIRST_NAME' | translate }}</span>
           </div>
           <div class="detail-value">{{ user.first_name || 'N/A' }}</div>
         </div>
@@ -113,7 +113,7 @@
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-            <span>Last Name</span>
+            <span>{{ 'USER.LAST_NAME' | translate }}</span>
           </div>
           <div class="detail-value">{{ user.last_name || 'N/A' }}</div>
         </div>
@@ -127,7 +127,7 @@
               <path d="M2 17l10 5 10-5"/>
               <path d="M2 12l10 5 10-5"/>
             </svg>
-            <span>Moodle ID</span>
+            <span>{{ 'USER.MOODLE_ID' | translate }}</span>
           </div>
           <div class="detail-value">{{ user.moodle_id }}</div>
         </div>
@@ -139,7 +139,7 @@
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12,6 12,12 16,14"/>
           </svg>
-          <span>Last Login</span>
+          <span>{{ 'USER.LAST_LOGIN' | translate }}</span>
         </div>
         <div class="detail-value">{{ formatDate(user.last_login) }}</div>
       </div>
@@ -149,7 +149,7 @@
           <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
           </svg>
-          <span>Status</span>
+          <span>{{ 'USER.STATUS' | translate }}</span>
         </div>
         <div class="detail-value">{{ getStatusText(user.status) }}</div>
       </div>
@@ -160,8 +160,8 @@
 <div class="modal-overlay" [class.active]="isEditModalOpen" (click)="onCancel()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Edit User</h3>
-      <button class="close-btn" (click)="onCancel()" title="Close">
+      <h3>{{ 'USER.EDIT_USER' | translate }}</h3>
+      <button class="close-btn" (click)="onCancel()" [title]="'COMMON.CLOSE' | translate">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -170,46 +170,45 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="username">{{ 'USER.USERNAME' | translate }}</label>
         <input id="username" type="text" [(ngModel)]="editingUser.username" class="form-input">
       </div>
       <div class="form-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">{{ 'USER.FIRST_NAME' | translate }}</label>
         <input id="firstName" type="text" [(ngModel)]="editingUser.first_name" class="form-input">
       </div>
       <div class="form-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">{{ 'USER.LAST_NAME' | translate }}</label>
         <input id="lastName" type="text" [(ngModel)]="editingUser.last_name" class="form-input">
       </div>
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">{{ 'USER.EMAIL' | translate }}</label>
         <input id="email" type="email" [(ngModel)]="editingUser.email" class="form-input">
       </div>
       <div class="form-group">
-        <label for="role">Role</label>
+        <label for="role">{{ 'USER.ROLE' | translate }}</label>
         <select id="role" [(ngModel)]="editingUser.role" class="form-input">
-          <option value="">Select a role</option>
-          <option value="admin">Admin</option>
-          <option value="teacher">Teacher</option>
-          <option value="student">Student</option>
-          <option value="user">User</option>
+          <option value="">{{ 'USER.SELECT_ROLE' | translate }}</option>
+          <option value="admin">{{ 'USER.ADMIN' | translate }}</option>
+          <option value="teacher">{{ 'USER.TEACHER' | translate }}</option>
+          <option value="student">{{ 'USER.STUDENT' | translate }}</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="moodleId">Moodle ID</label>
+        <label for="moodleId">{{ 'USER.MOODLE_ID' | translate }}</label>
         <input id="moodleId" type="number" [(ngModel)]="editingUser.moodle_id" class="form-input">
       </div>
       <div class="form-group">
-        <label for="status">Status</label>
+        <label for="status">{{ 'USER.STATUS' | translate }}</label>
         <select id="status" [(ngModel)]="editingUser.status" class="form-input">
-          <option [value]="1">Active</option>
-          <option [value]="0">Inactive</option>
+          <option [value]="1">{{ 'USER.ACTIVE' | translate }}</option>
+          <option [value]="0">{{ 'USER.INACTIVE' | translate }}</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button class="btn btn-primary" (click)="onSave()">Save</button>
+      <button class="btn btn-secondary" (click)="onCancel()">{{ 'USER.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onSave()">{{ 'USER.SAVE' | translate }}</button>
     </div>
   </div>
 </div>

@@ -2,15 +2,15 @@
   <div class="header">
     <div class="header-content">
       <div class="header-text">
-        <h1 class="title">Users</h1>
-        <p class="subtitle">Manage and view all users</p>
+        <h1 class="title">{{ 'USERS.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'USERS.SUBTITLE' | translate }}</p>
       </div>
-      <button class="add-btn" (click)="openCreateModal()" title="Add New User">
+      <button class="add-btn" (click)="openCreateModal()" [title]="'USERS.ADD_USER' | translate">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
-        Add User
+        {{ 'USERS.ADD_USER' | translate }}
       </button>
     </div>
   </div>
@@ -32,9 +32,9 @@
         
         <div class="user-info">
           <h3 class="user-name">{{ user.username }}</h3>
-          <p class="user-email">{{ user.email || 'No email' }}</p>
+          <p class="user-email">{{ user.email || ('USERS.NO_EMAIL' | translate) }}</p>
           <div class="user-meta">
-            <span class="meta-item">{{ user.role || 'User' }}</span>
+            <span class="meta-item">{{ user.role || ('USERS.USER' | translate) }}</span>
           </div>
         </div>
 
@@ -47,21 +47,23 @@
     }
   </div>
 
-  <div *ngIf="users.length === 0" class="empty-state">
-    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
-    </svg>
-    <h3>No users found</h3>
-    <p>Get started by adding your first user</p>
-  </div>
+  @if (users.length === 0) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <h3>{{ 'USERS.NO_USERS' | translate }}</h3>
+      <p>{{ 'USERS.GET_STARTED' | translate }}</p>
+    </div>
+  }
 </div>
 
 <div class="modal-overlay" [class.active]="isCreateModalOpen" (click)="onCancelCreate()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Add New User</h3>
-      <button class="close-btn" (click)="onCancelCreate()" title="Close">
+      <h3>{{ 'USERS.ADD_USER' | translate }}</h3>
+      <button class="close-btn" (click)="onCancelCreate()" [title]="'COMMON.CLOSE' | translate">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -70,31 +72,30 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="createUsername">Username</label>
+        <label for="createUsername">{{ 'USERS.USERNAME' | translate }}</label>
         <input id="createUsername" type="text" [(ngModel)]="newUser.username" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="createEmail">Email</label>
+        <label for="createEmail">{{ 'USERS.EMAIL' | translate }}</label>
         <input id="createEmail" type="email" [(ngModel)]="newUser.email" class="form-input">
       </div>
       <div class="form-group">
-        <label for="createPassword">Password</label>
+        <label for="createPassword">{{ 'USERS.PASSWORD' | translate }}</label>
         <input id="createPassword" type="password" [(ngModel)]="newUser.password" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="createRole">Role</label>
+        <label for="createRole">{{ 'USERS.ROLE' | translate }}</label>
         <select id="createRole" [(ngModel)]="newUser.role" class="form-input">
-          <option value="">Select a role</option>
-          <option value="admin">Admin</option>
-          <option value="teacher">Teacher</option>
-          <option value="student">Student</option>
-          <option value="user">User</option>
+          <option value="">{{ 'USERS.SELECT_ROLE' | translate }}</option>
+          <option value="admin">{{ 'USERS.ADMIN' | translate }}</option>
+          <option value="teacher">{{ 'USERS.TEACHER' | translate }}</option>
+          <option value="student">{{ 'USERS.STUDENT' | translate }}</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="onCancelCreate()">Cancel</button>
-      <button class="btn btn-primary" (click)="onCreateUser()">Create User</button>
+      <button class="btn btn-secondary" (click)="onCancelCreate()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onCreateUser()">{{ 'USERS.CREATE_USER' | translate }}</button>
     </div>
   </div>
 </div>

@@ -1,1 +1,272 @@
-<p>group works!</p>
+<div class="page-container">
+  <div class="header">
+    <div class="header-content">
+      <div>
+        <button class="back-btn" (click)="router.navigate(['/groups'])" [title]="'GROUP.BACK' | translate">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15,18 9,12 15,6"/>
+          </svg>
+        </button>
+        <h1 class="title">{{ 'GROUP.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'GROUP.SUBTITLE' | translate }}</p>
+      </div>
+      <div class="header-actions" role="group" aria-label="Actions">
+        <button class="action-btn edit" [title]="'GROUP.EDIT' | translate" [attr.aria-label]="'GROUP.EDIT' | translate" (click)="onEdit(group)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
+          </svg>
+          {{ 'GROUP.EDIT' | translate }}
+        </button>
+        <button class="action-btn delete" [title]="'GROUP.DELETE' | translate" [attr.aria-label]="'GROUP.DELETE' | translate" (click)="onDelete(group)">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3,6 5,6 21,6"/>
+            <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
+            <line x1="10" y1="11" x2="10" y2="17"/>
+            <line x1="14" y1="11" x2="14" y2="17"/>
+          </svg>
+          {{ 'GROUP.DELETE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-detail-card">
+    <div class="group-header-section">
+      <div class="group-header-info">
+        <h2 class="group-name-large">{{ group.name }}</h2>
+        <div class="group-meta-badges">
+          <div class="group-meta-badge">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span>{{ 'GROUP.STATUS' | translate }} {{ getStatusText(group.status) }}</span>
+          </div>
+          @if (group.teacher) {
+            <div class="group-meta-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>{{ 'GROUP.TEACHER' | translate }} {{ group.teacher }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="group-details-section">
+      <div class="detail-row">
+        <div class="detail-label">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span>{{ 'GROUP.NAME' | translate }}</span>
+        </div>
+        <div class="detail-value">{{ group.name }}</div>
+      </div>
+
+      @if (group.short_description) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+            <span>{{ 'GROUP.SHORT_DESCRIPTION' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ group.short_description }}</div>
+        </div>
+      }
+
+      @if (group.long_description) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10,9 9,9 8,9"/>
+            </svg>
+            <span>{{ 'GROUP.LONG_DESCRIPTION' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ group.long_description }}</div>
+        </div>
+      }
+
+      @if (group.teacher) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>{{ 'GROUP.TEACHER_LABEL' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ group.teacher }}</div>
+        </div>
+      }
+
+      @if (group.moodle_id) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+            <span>{{ 'GROUP.MOODLE_ID' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ group.moodle_id }}</div>
+        </div>
+      }
+
+      @if (group.start_date) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>{{ 'GROUP.START_DATE' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ formatDate(group.start_date) }}</div>
+        </div>
+      }
+
+      @if (group.end_date) {
+        <div class="detail-row">
+          <div class="detail-label">
+            <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>{{ 'GROUP.END_DATE' | translate }}</span>
+          </div>
+          <div class="detail-value">{{ group.end_date }}</div>
+        </div>
+      }
+
+      <div class="detail-row">
+        <div class="detail-label">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+          </svg>
+          <span>{{ 'GROUP.STATUS_LABEL' | translate }}</span>
+        </div>
+        <div class="detail-value">{{ getStatusText(group.status) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="students-section">
+    <h3 class="section-title">{{ 'GROUP.STUDENTS_IN_GROUP' | translate }}</h3>
+    @if (students.length === 0) {
+      <div class="empty-state-small">
+        <p>{{ 'GROUP.NO_STUDENTS' | translate }}</p>
+      </div>
+    } @else {
+      <div class="students-grid">
+        @for (student of students; track student.id) {
+          <div 
+            class="student-card" 
+            (click)="onStudentClick(student.id)"
+            role="button"
+            tabindex="0"
+          >
+            <div class="student-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            
+            <div class="student-info">
+              <h4 class="student-name">{{ student.first_name }} {{ student.last_name }}</h4>
+              @if (student.phone) {
+                <p class="student-phone">{{ student.phone }}</p>
+              }
+              @if (student.enrollment_date) {
+                <p class="student-enrollment">{{ 'STUDENT.ENROLLED' | translate }}: {{ formatDate(student.enrollment_date) }}</p>
+              }
+            </div>
+
+            <div class="arrow-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9,18 15,12 9,6"/>
+              </svg>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<div class="modal-overlay" [class.active]="isEditModalOpen" (click)="onCancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'GROUP.EDIT_GROUP' | translate }}</h3>
+      <button class="close-btn" (click)="onCancel()" [title]="'COMMON.CLOSE' | translate">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="editName">{{ 'GROUP.NAME' | translate }}</label>
+        <input id="editName" type="text" [(ngModel)]="editingGroup.name" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="editShortDescription">{{ 'GROUP.SHORT_DESCRIPTION' | translate }}</label>
+        <input id="editShortDescription" type="text" [(ngModel)]="editingGroup.short_description" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="editLongDescription">{{ 'GROUP.LONG_DESCRIPTION' | translate }}</label>
+        <textarea id="editLongDescription" [(ngModel)]="editingGroup.long_description" class="form-input" rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="editMoodleId">{{ 'GROUP.MOODLE_ID' | translate }}</label>
+        <input id="editMoodleId" type="number" [(ngModel)]="editingGroup.moodle_id" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="editStartDate">{{ 'GROUP.START_DATE' | translate }}</label>
+        <input id="editStartDate" type="date" [(ngModel)]="editingGroup.start_date" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="editEndDate">{{ 'GROUP.END_DATE' | translate }}</label>
+        <input id="editEndDate" type="text" [(ngModel)]="editingGroup.end_date" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="editStatus">{{ 'GROUP.STATUS_LABEL' | translate }}</label>
+        <select id="editStatus" [(ngModel)]="editingGroup.status" class="form-input">
+          <option value="active">{{ 'GROUP.ACTIVE' | translate }}</option>
+          <option value="inactive">{{ 'GROUP.INACTIVE' | translate }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editTeacher">{{ 'GROUP.TEACHER_LABEL' | translate }}</label>
+        <input id="editTeacher" type="text" [(ngModel)]="editingGroup.teacher" class="form-input">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onSave()">{{ 'COMMON.SAVE' | translate }}</button>
+    </div>
+  </div>
+</div>

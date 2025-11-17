@@ -2,29 +2,29 @@
   <div class="header">
     <div class="header-content">
       <div>
-        <button class="back-btn" (click)="router.navigate(['/students'])" title="Back to Students">
+        <button class="back-btn" (click)="router.navigate(['/students'])" [title]="'STUDENT.BACK' | translate">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15,18 9,12 15,6"/>
           </svg>
         </button>
-        <h1 class="title">Student Details</h1>
-        <p class="subtitle">View and manage student information</p>
+        <h1 class="title">{{ 'STUDENT.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'STUDENT.SUBTITLE' | translate }}</p>
       </div>
       <div class="header-actions" role="group" aria-label="Actions">
-        <button class="action-btn edit" title="Edit" aria-label="Edit" (click)="onEdit(student)">
+        <button class="action-btn edit" [title]="'STUDENT.EDIT' | translate" [attr.aria-label]="'STUDENT.EDIT' | translate" (click)="onEdit(student)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
           </svg>
-          Edit
+          {{ 'STUDENT.EDIT' | translate }}
         </button>
-        <button class="action-btn delete" title="Delete" aria-label="Delete" (click)="onDelete(student)">
+        <button class="action-btn delete" [title]="'STUDENT.DELETE' | translate" [attr.aria-label]="'STUDENT.DELETE' | translate" (click)="onDelete(student)">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="3,6 5,6 21,6"/>
             <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"/>
             <line x1="10" y1="11" x2="10" y2="17"/>
             <line x1="14" y1="11" x2="14" y2="17"/>
           </svg>
-          Delete
+          {{ 'STUDENT.DELETE' | translate }}
         </button>
       </div>
     </div>
@@ -41,7 +41,7 @@
             <line x1="8" y1="2" x2="8" y2="6"/>
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          <span>Enrolled: {{ formatDate(student.enrollment_date) }}</span>
+          <span>{{ 'STUDENT.ENROLLED' | translate }} {{ formatDate(student.enrollment_date) }}</span>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          <span>Phone</span>
+          <span>{{ 'STUDENT.PHONE' | translate }}</span>
         </div>
         <div class="detail-value">{{ student.phone }}</div>
       </div>
@@ -66,7 +66,7 @@
             <line x1="8" y1="2" x2="8" y2="6"/>
             <line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
-          <span>Enrollment Date</span>
+          <span>{{ 'STUDENT.ENROLLMENT_DATE' | translate }}</span>
         </div>
         <div class="detail-value">{{ formatDate(student.enrollment_date) }}</div>
       </div>
@@ -74,15 +74,15 @@
 
     <div class="group-enroll-section">
       <div class="group-enroll-header">
-        <h3 class="section-title">Assign to Group</h3>
-        <p class="section-subtitle">Select a group to enroll this student.</p>
+        <h3 class="section-title">{{ 'STUDENT.ASSIGN_TO_GROUP' | translate }}</h3>
+        <p class="section-subtitle">{{ 'STUDENT.SELECT_GROUP_SUBTITLE' | translate }}</p>
       </div>
       <div class="group-enroll-form">
         <select 
           class="form-input group-select"
           [(ngModel)]="selectedGroupId"
           [disabled]="groups.length === 0 || isEnrolling">
-          <option [ngValue]="null" disabled>Select a group</option>
+          <option [ngValue]="null" disabled>{{ 'STUDENT.SELECT_GROUP' | translate }}</option>
           @for (group of groups; track group.id) {
             <option [ngValue]="group.id">{{ group.name }}</option>
           }
@@ -92,7 +92,7 @@
           type="button"
           (click)="onEnrollInGroup()"
           [disabled]="!selectedGroupId || isEnrolling">
-          {{ isEnrolling ? 'Enrolling...' : 'Enroll Student' }}
+          {{ isEnrolling ? ('STUDENT.ENROLLING' | translate) : ('STUDENT.ENROLL' | translate) }}
         </button>
       </div>
       <div class="enroll-feedback">
@@ -110,8 +110,8 @@
 <div class="modal-overlay" [class.active]="isEditModalOpen" (click)="onCancel()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Edit Student</h3>
-      <button class="close-btn" (click)="onCancel()" title="Close">
+      <h3>{{ 'STUDENT.EDIT_STUDENT' | translate }}</h3>
+      <button class="close-btn" (click)="onCancel()" [title]="'COMMON.CLOSE' | translate">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -120,25 +120,25 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="firstName">First Name</label>
+        <label for="firstName">{{ 'STUDENT.FIRST_NAME' | translate }}</label>
         <input id="firstName" type="text" [(ngModel)]="editingStudent.first_name" class="form-input">
       </div>
       <div class="form-group">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">{{ 'STUDENT.LAST_NAME' | translate }}</label>
         <input id="lastName" type="text" [(ngModel)]="editingStudent.last_name" class="form-input">
       </div>
       <div class="form-group">
-        <label for="phone">Phone Number</label>
+        <label for="phone">{{ 'STUDENT.PHONE_NUMBER' | translate }}</label>
         <input id="phone" type="text" [(ngModel)]="editingStudent.phone" class="form-input">
       </div>
       <div class="form-group">
-        <label for="enrollmentDate">Enrollment Date</label>
+        <label for="enrollmentDate">{{ 'STUDENT.ENROLLMENT_DATE_LABEL' | translate }}</label>
         <input id="enrollmentDate" type="date" [(ngModel)]="editingStudent.enrollment_date" class="form-input">
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-      <button class="btn btn-primary" (click)="onSave()">Save</button>
+      <button class="btn btn-secondary" (click)="onCancel()">{{ 'STUDENT.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onSave()">{{ 'STUDENT.SAVE' | translate }}</button>
     </div>
   </div>
 </div>

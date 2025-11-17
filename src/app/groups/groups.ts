@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class Groups implements OnInit {
   private apiUrl = 'http://10.10.10.165:3000/groups';
+  private adminUrl = 'http://10.10.10.165:3000/admin';
   
   constructor(
     private router: Router,
@@ -19,19 +20,20 @@ export class Groups implements OnInit {
   ) {}
 
   groups: any[] = [];
+  users: any[] = [];
   isCreateModalOpen = false;
   newGroup: any = {
     name: '',
     short_description: '',
     moodle_id: '',
     end_date: '',
-    status: '',
     teacher: '',
     long_description: ''
   };
 
   ngOnInit() {
     this.loadGroups();
+    this.loadUsers();
   }
 
   loadGroups() {
@@ -46,6 +48,18 @@ export class Groups implements OnInit {
     });
   }
 
+  loadUsers() {
+    this.http.get<any[]>(this.adminUrl).subscribe({
+      next: (users) => {
+        this.users = users;
+      },
+      error: (error) => {
+        console.error('Error loading users:', error);
+        this.users = [];
+      }
+    });
+  }
+
   onGroupClick(groupId: number) {
     this.router.navigate(['/groups', groupId]);
   }
@@ -56,7 +70,6 @@ export class Groups implements OnInit {
       short_description: '',
       moodle_id: '',
       end_date: '',
-      status: '',
       teacher: '',
       long_description: ''
     };
@@ -64,7 +77,11 @@ export class Groups implements OnInit {
   }
 
   onCreateGroup() {
-    this.http.post(this.apiUrl, this.newGroup).subscribe({
+    const groupData = {
+      ...this.newGroup,
+      moodle_id: this.newGroup.moodle_id ? Number(this.newGroup.moodle_id) : null
+    };
+    this.http.post(this.apiUrl, groupData).subscribe({
       next: (createdGroup: any) => {
         this.groups.push(createdGroup);
         this.isCreateModalOpen = false;
@@ -85,7 +102,6 @@ export class Groups implements OnInit {
       short_description: '',
       moodle_id: '',
       end_date: '',
-      status: '',
       teacher: '',
       long_description: ''
     };

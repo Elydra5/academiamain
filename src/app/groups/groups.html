@@ -34,7 +34,7 @@
       
       <div class="group-info">
         <h3 class="group-name">{{ group.name }}</h3>
-        <p class="group-description">{{ group.description || 'No description' }}</p>
+        <p class="group-description">{{ group.long_description || 'No description' }}</p>
         <div class="group-meta">
           <span class="meta-item">{{ group.studentCount || 0 }} students</span>
         </div>
@@ -82,19 +82,20 @@
       </div>
       <div class="form-group">
         <label for="createMoodleId">Moodle ID</label>
-        <input id="createMoodleId" type="text" [(ngModel)]="newGroup.moodle_id" class="form-input">
+        <input id="createMoodleId" type="number" [(ngModel)]="newGroup.moodle_id" class="form-input">
       </div>
       <div class="form-group">
         <label for="createEndDate">End Date</label>
         <input id="createEndDate" type="date" [(ngModel)]="newGroup.end_date" class="form-input">
       </div>
       <div class="form-group">
-        <label for="createStatus">Status</label>
-        <input id="createStatus" type="text" [(ngModel)]="newGroup.status" class="form-input">
-      </div>
-      <div class="form-group">
         <label for="createTeacher">Teacher</label>
-        <input id="createTeacher" type="text" [(ngModel)]="newGroup.teacher" class="form-input">
+        <select id="createTeacher" [(ngModel)]="newGroup.teacher" class="form-input">
+          <option value="">Select a teacher</option>
+          @for (user of users; track user.id) {
+            <option [value]="user.username">{{ user.username }}</option>
+          }
+        </select>
       </div>
       <div class="form-group">
         <label for="createLongDescription">Long Description</label>

@@ -3,21 +3,116 @@
     <div class="header-content">
       <div class="header-text">
         <h1 class="title">Billing</h1>
-        <p class="subtitle">Manage student billing and payments</p>
+        <p class="subtitle">Generate invoices for students</p>
       </div>
     </div>
   </div>
 
   <div class="billing-card">
-    <div class="info-section">
-      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="12" y1="1" x2="12" y2="23"/>
-        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
-      <div>
-        <h2>Billing Management</h2>
-        <p>View and manage student billing information</p>
-      </div>
+    <div class="form-container">
+      <h2>Generate Invoice</h2>
+      
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          {{ errorMessage }}
+        </div>
+      }
+
+      @if (successMessage) {
+        <div class="alert alert-success">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          {{ successMessage }}
+        </div>
+      }
+
+      <form (ngSubmit)="generateInvoice()">
+        <div class="form-group">
+          <label for="studentId">Student *</label>
+          <select 
+            id="studentId" 
+            [(ngModel)]="invoiceData.studentId" 
+            name="studentId"
+            class="form-input" 
+            required
+            [disabled]="isLoading || isGenerating"
+          >
+            <option [value]="null">Select a student</option>
+            @for (student of students; track student.id) {
+              <option [value]="student.id">
+                {{ student.first_name }} {{ student.last_name }}
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="hoursStudied">Hours Studied *</label>
+          <input 
+            id="hoursStudied" 
+            type="number" 
+            [(ngModel)]="invoiceData.hoursStudied" 
+            name="hoursStudied"
+            class="form-input" 
+            step="0.01"
+            min="0.01"
+            required
+            [disabled]="isGenerating"
+            placeholder="Enter hours studied"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="totalAmount">Total Amount *</label>
+          <input 
+            id="totalAmount" 
+            type="number" 
+            [(ngModel)]="invoiceData.totalAmount" 
+            name="totalAmount"
+            class="form-input" 
+            step="0.01"
+            min="0.01"
+            required
+            [disabled]="isGenerating"
+            placeholder="Enter total amount"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            (click)="resetForm()"
+            [disabled]="isGenerating"
+          >
+            Reset
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="isGenerating || isLoading"
+          >
+            @if (isGenerating) {
+              <span>Generating...</span>
+            } @else {
+              <span>Generate Invoice</span>
+            }
+          </button>
+        </div>
+      </form>
+
+      @if (isLoading) {
+        <div class="loading-state">
+          <p>Loading students...</p>
+        </div>
+      }
     </div>
   </div>
 </div>

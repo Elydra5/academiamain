@@ -5,6 +5,7 @@ import { Footer } from "./footer/footer";
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LocationService } from './services/location';
 
 @Component({
   selector: 'app-root',
@@ -18,10 +19,19 @@ export class App {
 
   constructor(
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private locationService: LocationService
   ) {
     this.translate.setFallbackLang('es');
-    this.translate.use('es');
+    
+    const browserLang = this.getInitialLanguageFromBrowser();
+    this.translate.use(browserLang);
+    
+    this.locationService.getDefaultLanguage().subscribe((defaultLang) => {
+      if (defaultLang !== browserLang) {
+        this.translate.use(defaultLang);
+      }
+    });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -32,5 +42,23 @@ export class App {
     
     const currentUrl = this.router.url;
     this.showNavbarAndFooter = !currentUrl.includes('/login') && !currentUrl.includes('/forgot-password');
+  }
+
+  private getInitialLanguageFromBrowser(): string {
+    const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
+    
+    if (browserLang.startsWith('es')) {
+      return 'es';
+    }
+    
+    try {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (timezone === 'Europe/Madrid' || timezone.includes('Madrid')) {
+        return 'es';
+      }
+    } catch (e) {
+    }
+    
+    return 'en';
   }
 }

@@ -12,7 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './user.css',
 })
 export class User implements OnInit {
-  private apiUrl = 'http://185.80.49.54:3000/admin';
+  private apiUrl = 'https://academia.tokyohost.eu:3000/admin';
   
   constructor(
     private route: ActivatedRoute,

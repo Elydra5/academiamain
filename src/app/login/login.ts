@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
-  private apiUrl = 'http://185.80.49.54:3000';
+  private apiUrl = 'https://academia.tokyohost.eu:3000';
   
   constructor(
     private http: HttpClient,

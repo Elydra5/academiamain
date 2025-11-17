@@ -12,8 +12,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './student.css',
 })
 export class Student implements OnInit {
-  private apiUrl = 'http://185.80.49.54:3000/students';
-  private groupsApiUrl = 'http://185.80.49.54:3000/groups';
+  private apiUrl = 'https://academia.tokyohost.eu:3000/students';
+  private groupsApiUrl = 'https://academia.tokyohost.eu:3000/groups';
   
   constructor(
     private route: ActivatedRoute,

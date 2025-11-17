@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './forgotpasswd.css',
 })
 export class Forgotpasswd {
-  private apiUrl = 'http://185.80.49.54:3000';
+  private apiUrl = 'https://academia.tokyohost.eu:3000';
   
   constructor(private http: HttpClient) {}
 

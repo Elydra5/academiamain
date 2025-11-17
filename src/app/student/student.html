@@ -71,6 +71,39 @@
         <div class="detail-value">{{ formatDate(student.enrollment_date) }}</div>
       </div>
     </div>
+
+    <div class="group-enroll-section">
+      <div class="group-enroll-header">
+        <h3 class="section-title">Assign to Group</h3>
+        <p class="section-subtitle">Select a group to enroll this student.</p>
+      </div>
+      <div class="group-enroll-form">
+        <select 
+          class="form-input group-select"
+          [(ngModel)]="selectedGroupId"
+          [disabled]="groups.length === 0 || isEnrolling">
+          <option [ngValue]="null" disabled>Select a group</option>
+          @for (group of groups; track group.id) {
+            <option [ngValue]="group.id">{{ group.name }}</option>
+          }
+        </select>
+        <button 
+          class="enroll-btn"
+          type="button"
+          (click)="onEnrollInGroup()"
+          [disabled]="!selectedGroupId || isEnrolling">
+          {{ isEnrolling ? 'Enrolling...' : 'Enroll Student' }}
+        </button>
+      </div>
+      <div class="enroll-feedback">
+        @if (enrollSuccess) {
+          <span class="enroll-message success">{{ enrollSuccess }}</span>
+        }
+        @if (enrollError) {
+          <span class="enroll-message error">{{ enrollError }}</span>
+        }
+      </div>
+    </div>
   </div>
 </div>
 

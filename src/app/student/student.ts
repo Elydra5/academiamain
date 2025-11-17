@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class Student implements OnInit {
   private apiUrl = 'http://10.10.10.165:3000/students';
+  private groupsApiUrl = 'http://10.10.10.165:3000/groups';
   
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +31,12 @@ export class Student implements OnInit {
 
   isEditModalOpen = false;
   editingStudent: any = {};
+  groups: Array<{ id: number; name: string }> = [];
+  selectedGroupId: number | null = null;
+  isLoadingGroups = false;
+  isEnrolling = false;
+  enrollSuccess = '';
+  enrollError = '';
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -42,6 +49,7 @@ export class Student implements OnInit {
         console.error('Invalid student ID:', studentId);
       }
     });
+    this.loadGroups();
   }
 
   loadStudent(id: number) {
@@ -74,6 +82,27 @@ export class Student implements OnInit {
           phone: "",
           enrollment_date: ""
         };
+      }
+    });
+  }
+
+  loadGroups() {
+    this.isLoadingGroups = true;
+    this.http.get<any[]>(this.groupsApiUrl).subscribe({
+      next: (groups) => {
+        this.groups = (groups || []).map(group => ({
+          id: group.id,
+          name: group.name
+        }));
+        if (this.groups.length === 0) {
+          this.selectedGroupId = null;
+        }
+        this.isLoadingGroups = false;
+      },
+      error: (error) => {
+        console.error('Error loading groups:', error);
+        this.groups = [];
+        this.isLoadingGroups = false;
       }
     });
   }
@@ -118,6 +147,31 @@ export class Student implements OnInit {
       error: (error) => {
         console.error('Error deleting student:', error);
         alert('Error deleting student. Please try again.');
+      }
+    });
+  }
+
+  onEnrollInGroup() {
+    if (!this.selectedGroupId || !this.student?.id) {
+      this.enrollError = 'Please select a group first.';
+      this.enrollSuccess = '';
+      return;
+    }
+
+    const url = `${this.groupsApiUrl}/enroll/${this.selectedGroupId}/${this.student.id}`;
+    this.isEnrolling = true;
+    this.enrollSuccess = '';
+    this.enrollError = '';
+
+    this.http.post(url, {}).subscribe({
+      next: () => {
+        this.enrollSuccess = 'Student enrolled to the group successfully.';
+        this.isEnrolling = false;
+      },
+      error: (error) => {
+        console.error('Error enrolling student to group:', error);
+        this.enrollError = error.error?.message || 'Failed to enroll student. Please try again.';
+        this.isEnrolling = false;
       }
     });
   }

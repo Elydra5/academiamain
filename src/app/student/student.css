@@ -286,6 +286,88 @@
   font-weight: 500;
 }
 
+.group-enroll-section {
+  margin-top: 2rem;
+  padding: 1.75rem;
+  background: var(--bg-gray-50);
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.group-enroll-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.group-enroll-header .section-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.group-enroll-header .section-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.group-enroll-form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.group-select {
+  min-width: 220px;
+  flex: 1;
+}
+
+.enroll-btn {
+  padding: 0.85rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary-gradient);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+  min-width: 160px;
+}
+
+.enroll-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.enroll-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
+}
+
+.enroll-feedback {
+  min-height: 1.25rem;
+}
+
+.enroll-message {
+  font-size: 0.9rem;
+}
+
+.enroll-message.success {
+  color: #4ade80;
+}
+
+.enroll-message.error {
+  color: #f87171;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -518,6 +600,16 @@
 
   .detail-label {
     min-width: auto;
+  }
+
+  .group-enroll-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .enroll-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

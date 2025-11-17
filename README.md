@@ -837,8 +837,6 @@ Academia Main() is a web application made as a project of erasmus students to ma
 
 This documentation applies to the current version of the Academia Main() application. The application is under continuous development, so some features may change.
 
-If you have questions or need assistance, please contact the administrator or support team.
-
 ---
 
 **Documentation Version:** 1.0  

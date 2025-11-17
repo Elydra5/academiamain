@@ -837,8 +837,6 @@ Az Academia Main() egy erasmus alatt készült webes alkalmazás, amely segíts�
 
 Ez a dokumentáció az Academia Main() alkalmazás aktuális verziójára vonatkozik. Az alkalmazás folyamatos fejlesztés alatt áll, ezért egyes funkciók változhatnak.
 
-Ha kérdése van vagy segítségre van szüksége, kérjük, lépjen kapcsolatba az adminisztrátorral vagy a támogatási csapattal.
-
 ---
 
 **Dokumentáció verzió:** 1.0  

@@ -12,7 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './group.css',
 })
 export class Group implements OnInit {
-  private apiUrl = 'http://10.10.10.165:3000/groups';
+  private apiUrl = 'http://localhost:3000/groups';
   
   constructor(
     private route: ActivatedRoute,

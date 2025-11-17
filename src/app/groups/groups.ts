@@ -13,8 +13,8 @@ import { forkJoin } from 'rxjs';
   styleUrl: './groups.css',
 })
 export class Groups implements OnInit {
-  private apiUrl = 'http://10.10.10.165:3000/groups';
-  private adminUrl = 'http://10.10.10.165:3000/admin';
+  private apiUrl = 'http://localhost:3000/groups';
+  private adminUrl = 'http://localhost:3000/admin';
   
   constructor(
     private router: Router,

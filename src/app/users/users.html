@@ -1,0 +1,100 @@
+<div class="page-container">
+  <div class="header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="title">Users</h1>
+        <p class="subtitle">Manage and view all users</p>
+      </div>
+      <button class="add-btn" (click)="openCreateModal()" title="Add New User">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add User
+      </button>
+    </div>
+  </div>
+
+  <div class="users-grid">
+    @for (user of users; track trackByUserId($index, user)) {
+      <div 
+        class="user-card" 
+        (click)="onUserClick(user)"
+        role="button"
+        tabindex="0"
+      >
+        <div class="user-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        
+        <div class="user-info">
+          <h3 class="user-name">{{ user.username }}</h3>
+          <p class="user-email">{{ user.email || 'No email' }}</p>
+          <div class="user-meta">
+            <span class="meta-item">{{ user.role || 'User' }}</span>
+          </div>
+        </div>
+
+        <div class="arrow-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9,18 15,12 9,6"/>
+          </svg>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div *ngIf="users.length === 0" class="empty-state">
+    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <h3>No users found</h3>
+    <p>Get started by adding your first user</p>
+  </div>
+</div>
+
+<div class="modal-overlay" [class.active]="isCreateModalOpen" (click)="onCancelCreate()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Add New User</h3>
+      <button class="close-btn" (click)="onCancelCreate()" title="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="createUsername">Username</label>
+        <input id="createUsername" type="text" [(ngModel)]="newUser.username" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="createEmail">Email</label>
+        <input id="createEmail" type="email" [(ngModel)]="newUser.email" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="createPassword">Password</label>
+        <input id="createPassword" type="password" [(ngModel)]="newUser.password" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="createRole">Role</label>
+        <select id="createRole" [(ngModel)]="newUser.role" class="form-input">
+          <option value="">Select a role</option>
+          <option value="admin">Admin</option>
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+          <option value="user">User</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancelCreate()">Cancel</button>
+      <button class="btn btn-primary" (click)="onCreateUser()">Create User</button>
+    </div>
+  </div>
+</div>

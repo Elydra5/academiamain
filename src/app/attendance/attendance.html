@@ -2,24 +2,285 @@
   <div class="header">
     <div class="header-content">
       <div class="header-text">
-        <h1 class="title">Attendance</h1>
-        <p class="subtitle">Track and manage student attendance</p>
+        <h1 class="title">{{ 'ATTENDANCE.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'ATTENDANCE.SUBTITLE' | translate }}</p>
       </div>
+      <button class="add-btn" (click)="openCreateModal()" [title]="'ATTENDANCE.ADD_ATTENDANCE' | translate">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        {{ 'ATTENDANCE.ADD_ATTENDANCE' | translate }}
+      </button>
     </div>
   </div>
 
-  <div class="attendance-card">
-    <div class="info-section">
-      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-        <line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/>
-        <line x1="3" y1="10" x2="21" y2="10"/>
+  @if (successMessage) {
+    <div class="alert alert-success">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
       </svg>
-      <div>
-        <h2>Attendance Management</h2>
-        <p>View and manage student attendance records</p>
+      {{ successMessage }}
+    </div>
+  }
+
+  <div class="attendance-table-container">
+    <table class="attendance-table">
+      <thead>
+        <tr>
+          <th>{{ 'ATTENDANCE.STUDENT' | translate }}</th>
+          <th>{{ 'ATTENDANCE.GROUP' | translate }}</th>
+          <th>{{ 'ATTENDANCE.DATE' | translate }}</th>
+          <th>{{ 'ATTENDANCE.DURATION' | translate }}</th>
+          <th>{{ 'ATTENDANCE.TEACHER' | translate }}</th>
+          <th>{{ 'ATTENDANCE.HOURLY_RATE' | translate }}</th>
+          <th>{{ 'ATTENDANCE.RECEIPT' | translate }}</th>
+          <th>{{ 'COMMON.ACTIONS' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (attendance of attendances; track attendance.id) {
+          <tr>
+            <td>{{ getStudentName(attendance.student_id) }}</td>
+            <td>{{ getGroupName(attendance.group_id) }}</td>
+            <td>{{ formatDate(attendance.date) }}</td>
+            <td>{{ formatDuration(attendance.duration) }}</td>
+            <td>{{ attendance.teacher }}</td>
+            <td>{{ attendance.hourly_rate ? attendance.hourly_rate + ' €' : '-' }}</td>
+            <td>
+              @if (attendance.receipt_id) {
+                <span class="badge badge-success">{{ 'ATTENDANCE.RECEIPT_GENERATED' | translate }}</span>
+              } @else {
+                <span class="badge badge-secondary">{{ 'ATTENDANCE.NO_RECEIPT' | translate }}</span>
+              }
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon" (click)="openEditModal(attendance)" [title]="'COMMON.EDIT' | translate">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </button>
+                <button class="btn-icon btn-icon-danger" (click)="onDeleteAttendance(attendance)" [title]="'COMMON.DELETE' | translate">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                </button>
+                @if (!attendance.receipt_id) {
+                  <button class="btn-icon btn-icon-primary" (click)="openReceiptModal(attendance)" [title]="'ATTENDANCE.GENERATE_RECEIPT' | translate">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="empty-cell">
+              <div class="empty-state">
+                <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <h3>{{ 'ATTENDANCE.NO_ATTENDANCE' | translate }}</h3>
+                <p>{{ 'ATTENDANCE.GET_STARTED' | translate }}</p>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal-overlay" [class.active]="isCreateModalOpen" (click)="onCancelCreate()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'ATTENDANCE.ADD_ATTENDANCE' | translate }}</h3>
+      <button class="close-btn" (click)="onCancelCreate()" [title]="'COMMON.CLOSE' | translate">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          {{ errorMessage }}
+        </div>
+      }
+      <div class="form-group">
+        <label for="createStudent">{{ 'ATTENDANCE.STUDENT' | translate }} *</label>
+        <select id="createStudent" [(ngModel)]="newAttendance.student_id" name="student_id" class="form-input" required>
+          <option [value]="null">{{ 'ATTENDANCE.SELECT_STUDENT' | translate }}</option>
+          @for (student of students; track student.id) {
+            <option [value]="student.id">{{ student.first_name }} {{ student.last_name }}</option>
+          }
+        </select>
       </div>
+      <div class="form-group">
+        <label for="createGroup">{{ 'ATTENDANCE.GROUP' | translate }} *</label>
+        <select id="createGroup" [(ngModel)]="newAttendance.group_id" name="group_id" class="form-input" required>
+          <option [value]="null">{{ 'ATTENDANCE.SELECT_GROUP' | translate }}</option>
+          @for (group of groups; track group.id) {
+            <option [value]="group.id">{{ group.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="createDate">{{ 'ATTENDANCE.DATE' | translate }} *</label>
+        <input id="createDate" type="date" [(ngModel)]="newAttendance.date" name="date" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="createDuration">{{ 'ATTENDANCE.DURATION' | translate }} ({{ 'ATTENDANCE.MINUTES' | translate }}) *</label>
+        <input id="createDuration" type="number" [(ngModel)]="newAttendance.duration" name="duration" class="form-input" min="1" required>
+      </div>
+      <div class="form-group">
+        <label for="createTeacher">{{ 'ATTENDANCE.TEACHER' | translate }} *</label>
+        <select id="createTeacher" [(ngModel)]="newAttendance.teacher" name="teacher" class="form-input" required>
+          <option value="">{{ 'ATTENDANCE.SELECT_TEACHER' | translate }}</option>
+          @for (teacher of teachers; track $index) {
+            <option [value]="teacher.username">{{ teacher.username }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="createHourlyRate">{{ 'ATTENDANCE.HOURLY_RATE' | translate }} (€) *</label>
+        <input id="createHourlyRate" type="number" [(ngModel)]="newAttendance.hourly_rate" name="hourly_rate" class="form-input" step="0.01" min="0" required>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancelCreate()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onCreateAttendance()">{{ 'ATTENDANCE.CREATE_ATTENDANCE' | translate }}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" [class.active]="isEditModalOpen" (click)="onCancelEdit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'ATTENDANCE.EDIT_ATTENDANCE' | translate }}</h3>
+      <button class="close-btn" (click)="onCancelEdit()" [title]="'COMMON.CLOSE' | translate">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          {{ errorMessage }}
+        </div>
+      }
+      <div class="form-group">
+        <label for="editStudent">{{ 'ATTENDANCE.STUDENT' | translate }} *</label>
+        <select id="editStudent" [(ngModel)]="editingAttendance.student_id" name="student_id" class="form-input" required>
+          <option [value]="null">{{ 'ATTENDANCE.SELECT_STUDENT' | translate }}</option>
+          @for (student of students; track student.id) {
+            <option [value]="student.id">{{ student.first_name }} {{ student.last_name }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editGroup">{{ 'ATTENDANCE.GROUP' | translate }} *</label>
+        <select id="editGroup" [(ngModel)]="editingAttendance.group_id" name="group_id" class="form-input" required>
+          <option [value]="null">{{ 'ATTENDANCE.SELECT_GROUP' | translate }}</option>
+          @for (group of groups; track group.id) {
+            <option [value]="group.id">{{ group.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editDate">{{ 'ATTENDANCE.DATE' | translate }} *</label>
+        <input id="editDate" type="date" [(ngModel)]="editingAttendance.date" name="date" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="editDuration">{{ 'ATTENDANCE.DURATION' | translate }} ({{ 'ATTENDANCE.MINUTES' | translate }}) *</label>
+        <input id="editDuration" type="number" [(ngModel)]="editingAttendance.duration" name="duration" class="form-input" min="1" required>
+      </div>
+      <div class="form-group">
+        <label for="editTeacher">{{ 'ATTENDANCE.TEACHER' | translate }} *</label>
+        <select id="editTeacher" [(ngModel)]="editingAttendance.teacher" name="teacher" class="form-input" required>
+          <option value="">{{ 'ATTENDANCE.SELECT_TEACHER' | translate }}</option>
+          @for (teacher of teachers; track $index) {
+            <option [value]="teacher.username">{{ teacher.username }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editHourlyRate">{{ 'ATTENDANCE.HOURLY_RATE' | translate }} (€) *</label>
+        <input id="editHourlyRate" type="number" [(ngModel)]="editingAttendance.hourly_rate" name="hourly_rate" class="form-input" step="0.01" min="0" required>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancelEdit()">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onUpdateAttendance()">{{ 'COMMON.SAVE' | translate }}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" [class.active]="isReceiptModalOpen" (click)="onCancelReceipt()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'ATTENDANCE.GENERATE_RECEIPT' | translate }}</h3>
+      <button class="close-btn" (click)="onCancelReceipt()" [title]="'COMMON.CLOSE' | translate">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      @if (errorMessage) {
+        <div class="alert alert-error">
+          {{ errorMessage }}
+        </div>
+      }
+      @if (selectedAttendanceForReceipt) {
+        <div class="info-box">
+          <p><strong>{{ 'ATTENDANCE.STUDENT' | translate }}:</strong> {{ getStudentName(selectedAttendanceForReceipt.student_id) }}</p>
+          <p><strong>{{ 'ATTENDANCE.DATE' | translate }}:</strong> {{ formatDate(selectedAttendanceForReceipt.date) }}</p>
+          <p><strong>{{ 'ATTENDANCE.DURATION' | translate }}:</strong> {{ formatDuration(selectedAttendanceForReceipt.duration) }}</p>
+        </div>
+      }
+      <div class="form-group">
+        <label for="receiptHours">{{ 'ATTENDANCE.HOURS' | translate }} ({{ 'ATTENDANCE.OPTIONAL' | translate }})</label>
+        <input id="receiptHours" type="number" [(ngModel)]="receiptData.hours" name="hours" class="form-input" step="0.01" min="0" placeholder="Auto: duration / 60">
+        <small class="form-hint">{{ 'ATTENDANCE.HOURS_HINT' | translate }}</small>
+      </div>
+      <div class="form-group">
+        <label for="receiptHourlyRate">{{ 'ATTENDANCE.HOURLY_RATE' | translate }} (€) ({{ 'ATTENDANCE.OPTIONAL' | translate }})</label>
+        <input id="receiptHourlyRate" type="number" [(ngModel)]="receiptData.hourlyRate" name="hourlyRate" class="form-input" step="0.01" min="0" placeholder="Auto: attendance hourly rate">
+        <small class="form-hint">{{ 'ATTENDANCE.HOURLY_RATE_HINT' | translate }}</small>
+      </div>
+      <div class="form-group">
+        <label for="receiptPaymentMethod">{{ 'ATTENDANCE.PAYMENT_METHOD' | translate }} ({{ 'ATTENDANCE.OPTIONAL' | translate }})</label>
+        <input id="receiptPaymentMethod" type="text" [(ngModel)]="receiptData.paymentMethod" name="paymentMethod" class="form-input" placeholder="Cash, Card, etc.">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancelReceipt()" [disabled]="isGeneratingReceipt">{{ 'COMMON.CANCEL' | translate }}</button>
+      <button class="btn btn-primary" (click)="onGenerateReceipt()" [disabled]="isGeneratingReceipt">
+        @if (isGeneratingReceipt) {
+          {{ 'ATTENDANCE.GENERATING' | translate }}...
+        } @else {
+          {{ 'ATTENDANCE.GENERATE_RECEIPT' | translate }}
+        }
+      </button>
     </div>
   </div>
 </div>

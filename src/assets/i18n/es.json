@@ -168,6 +168,43 @@
     "EDIT": "Editar",
     "CREATE": "Crear",
     "PREVIOUS": "Anterior",
-    "NEXT": "Siguiente"
+    "NEXT": "Siguiente",
+    "ACTIONS": "Acciones"
+  },
+  "ATTENDANCE": {
+    "TITLE": "Asistencia",
+    "SUBTITLE": "Rastrear y gestionar la asistencia de estudiantes",
+    "ADD_ATTENDANCE": "Agregar Asistencia",
+    "CREATE_ATTENDANCE": "Crear Asistencia",
+    "EDIT_ATTENDANCE": "Editar Asistencia",
+    "NO_ATTENDANCE": "No se encontraron registros de asistencia",
+    "GET_STARTED": "Comienza agregando tu primer registro de asistencia",
+    "STUDENT": "Estudiante",
+    "GROUP": "Grupo",
+    "DATE": "Fecha",
+    "DURATION": "Duración",
+    "TEACHER": "Profesor",
+    "HOURLY_RATE": "Tarifa por Hora",
+    "RECEIPT": "Recibo",
+    "RECEIPT_GENERATED": "Generado",
+    "NO_RECEIPT": "No Generado",
+    "GENERATE_RECEIPT": "Generar Recibo",
+    "GENERATING": "Generando",
+    "SELECT_STUDENT": "Seleccionar un estudiante",
+    "SELECT_GROUP": "Seleccionar un grupo",
+    "SELECT_TEACHER": "Seleccionar un profesor",
+    "MINUTES": "minutos",
+    "HOURS": "Horas",
+    "OPTIONAL": "Opcional",
+    "HOURS_HINT": "Si no se especifica, usará duración / 60",
+    "HOURLY_RATE_HINT": "Si no se especifica, usará la tarifa por hora de asistencia",
+    "PAYMENT_METHOD": "Método de Pago"
+  },
+  "FOOTER": {
+    "DESCRIPTION": "Sistema de gestión de estudiantes Academia Main().",
+    "QUICK_LINKS": "Enlaces rápidos",
+    "SUPPORT": "Soporte",
+    "LANGUAGE": "Idioma",
+    "ALL_RIGHTS_RESERVED": "Todos los derechos reservados."
   }
 }

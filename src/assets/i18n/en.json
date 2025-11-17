@@ -168,6 +168,43 @@
     "EDIT": "Edit",
     "CREATE": "Create",
     "PREVIOUS": "Previous",
-    "NEXT": "Next"
+    "NEXT": "Next",
+    "ACTIONS": "Actions"
+  },
+  "ATTENDANCE": {
+    "TITLE": "Attendance",
+    "SUBTITLE": "Track and manage student attendance",
+    "ADD_ATTENDANCE": "Add Attendance",
+    "CREATE_ATTENDANCE": "Create Attendance",
+    "EDIT_ATTENDANCE": "Edit Attendance",
+    "NO_ATTENDANCE": "No attendance records found",
+    "GET_STARTED": "Get started by adding your first attendance record",
+    "STUDENT": "Student",
+    "GROUP": "Group",
+    "DATE": "Date",
+    "DURATION": "Duration",
+    "TEACHER": "Teacher",
+    "HOURLY_RATE": "Hourly Rate",
+    "RECEIPT": "Receipt",
+    "RECEIPT_GENERATED": "Generated",
+    "NO_RECEIPT": "Not Generated",
+    "GENERATE_RECEIPT": "Generate Receipt",
+    "GENERATING": "Generating",
+    "SELECT_STUDENT": "Select a student",
+    "SELECT_GROUP": "Select a group",
+    "SELECT_TEACHER": "Select a teacher",
+    "MINUTES": "minutes",
+    "HOURS": "Hours",
+    "OPTIONAL": "Optional",
+    "HOURS_HINT": "If not specified, will use duration / 60",
+    "HOURLY_RATE_HINT": "If not specified, will use attendance hourly rate",
+    "PAYMENT_METHOD": "Payment Method"
+  },
+  "FOOTER": {
+    "DESCRIPTION": "Academia Main() student management system.",
+    "QUICK_LINKS": "Quick Links",
+    "SUPPORT": "Support",
+    "LANGUAGE": "Language",
+    "ALL_RIGHTS_RESERVED": "All rights reserved."
   }
 }

@@ -12,7 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './students.css',
 })
 export class Students implements OnInit {
-  private apiUrl = 'http://localhost:3000/students';
+  private apiUrl = 'http://127.0.0.1:3000/students';
   
   constructor(
     private router: Router,

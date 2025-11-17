@@ -12,10 +12,10 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './attendance.css',
 })
 export class Attendance implements OnInit {
-  private apiUrl = 'http://localhost:3000/attendance';
-  private studentsUrl = 'http://localhost:3000/students';
-  private groupsUrl = 'http://localhost:3000/groups';
-  private adminUrl = 'http://localhost:3000/admin';
+  private apiUrl = 'http://127.0.0.1:3000/attendance';
+  private studentsUrl = 'http://127.0.0.1:3000/students';
+  private groupsUrl = 'http://127.0.0.1:3000/groups';
+  private adminUrl = 'http://127.0.0.1:3000/admin';
   
   constructor(
     private router: Router,

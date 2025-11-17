@@ -10,8 +10,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './billing.css',
 })
 export class Billing implements OnInit {
-  private studentsUrl = 'http://localhost:3000/students';
-  private billingUrl = 'http://localhost:3000/billing/generate';
+  private studentsUrl = 'http://127.0.0.1:3000/students';
+  private billingUrl = 'http://127.0.0.1:3000/billing/generate';
   
   constructor(private http: HttpClient) {}
 

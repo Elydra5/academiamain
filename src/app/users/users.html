@@ -76,6 +76,14 @@
         <input id="createUsername" type="text" [(ngModel)]="newUser.username" class="form-input" required>
       </div>
       <div class="form-group">
+        <label for="createFirstName">{{ 'USER.FIRST_NAME' | translate }}</label>
+        <input id="createFirstName" type="text" [(ngModel)]="newUser.first_name" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="createLastName">{{ 'USER.LAST_NAME' | translate }}</label>
+        <input id="createLastName" type="text" [(ngModel)]="newUser.last_name" class="form-input">
+      </div>
+      <div class="form-group">
         <label for="createEmail">{{ 'USERS.EMAIL' | translate }}</label>
         <input id="createEmail" type="email" [(ngModel)]="newUser.email" class="form-input">
       </div>
@@ -90,6 +98,17 @@
           <option value="admin">{{ 'USERS.ADMIN' | translate }}</option>
           <option value="teacher">{{ 'USERS.TEACHER' | translate }}</option>
           <option value="student">{{ 'USERS.STUDENT' | translate }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="createMoodleId">{{ 'USER.MOODLE_ID' | translate }}</label>
+        <input id="createMoodleId" type="number" [(ngModel)]="newUser.moodle_id" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="createStatus">{{ 'USER.STATUS' | translate }}</label>
+        <select id="createStatus" [(ngModel)]="newUser.status" class="form-input">
+          <option [value]="1">{{ 'USER.ACTIVE' | translate }}</option>
+          <option [value]="0">{{ 'USER.INACTIVE' | translate }}</option>
         </select>
       </div>
     </div>

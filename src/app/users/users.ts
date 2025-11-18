@@ -23,9 +23,13 @@ export class Users implements OnInit {
   isCreateModalOpen = false;
   newUser: any = {
     username: '',
-    email: '',
     password: '',
-    role: ''
+    role: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    moodle_id: null,
+    status: 1
   };
 
   ngOnInit() {
@@ -57,9 +61,13 @@ export class Users implements OnInit {
   openCreateModal() {
     this.newUser = {
       username: '',
-      email: '',
       password: '',
-      role: ''
+      role: '',
+      first_name: '',
+      last_name: '',
+      email: '',
+      moodle_id: null,
+      status: 1
     };
     this.isCreateModalOpen = true;
   }
@@ -83,9 +91,13 @@ export class Users implements OnInit {
     this.isCreateModalOpen = false;
     this.newUser = {
       username: '',
-      email: '',
       password: '',
-      role: ''
+      role: '',
+      first_name: '',
+      last_name: '',
+      email: '',
+      moodle_id: null,
+      status: 1
     };
   }
 }

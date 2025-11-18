@@ -30,10 +30,10 @@ export class LocationService {
   }
 
   private detectCountry(): Observable<string> {
-    return this.http.get<any>('https://ipapi.co/json/').pipe(
+    return this.http.get<any>('https://ipwho.is/json/').pipe(
       map((response) => response.country_code || ''),
       catchError(() => {
-        return this.http.get<any>('https://ip-api.com/json/').pipe(
+        return this.http.get<any>('https://ipwho.is/json/').pipe(
           map((response) => response.countryCode || ''),
           catchError(() => of(''))
         );

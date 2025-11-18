@@ -2,15 +2,15 @@
   <div class="header">
     <div class="header-content">
       <div class="header-text">
-        <h1 class="title">Billing</h1>
-        <p class="subtitle">Generate invoices for students</p>
+        <h1 class="title">{{ 'BILLING.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'BILLING.SUBTITLE' | translate }}</p>
       </div>
     </div>
   </div>
 
   <div class="billing-card">
     <div class="form-container">
-      <h2>Generate Invoice</h2>
+      <h2>{{ 'BILLING.GENERATE_INVOICE' | translate }}</h2>
       
       @if (errorMessage) {
         <div class="alert alert-error">
@@ -35,7 +35,7 @@
 
       <form (ngSubmit)="generateInvoice()">
         <div class="form-group">
-          <label for="studentId">Student *</label>
+          <label for="studentId">{{ 'BILLING.STUDENT' | translate }} *</label>
           <select 
             id="studentId" 
             [(ngModel)]="invoiceData.studentId" 
@@ -44,7 +44,7 @@
             required
             [disabled]="isLoading || isGenerating"
           >
-            <option [value]="null">Select a student</option>
+            <option [value]="null">{{ 'BILLING.SELECT_STUDENT' | translate }}</option>
             @for (student of students; track student.id) {
               <option [value]="student.id">
                 {{ student.first_name }} {{ student.last_name }}
@@ -54,7 +54,7 @@
         </div>
 
         <div class="form-group">
-          <label for="hoursStudied">Hours Studied *</label>
+          <label for="hoursStudied">{{ 'BILLING.HOURS_STUDIED' | translate }} *</label>
           <input 
             id="hoursStudied" 
             type="number" 
@@ -65,12 +65,12 @@
             min="0.01"
             required
             [disabled]="isGenerating"
-            placeholder="Enter hours studied"
+            [placeholder]="'BILLING.ENTER_HOURS_STUDIED' | translate"
           />
         </div>
 
         <div class="form-group">
-          <label for="totalAmount">Total Amount *</label>
+          <label for="totalAmount">{{ 'BILLING.TOTAL_AMOUNT' | translate }} *</label>
           <input 
             id="totalAmount" 
             type="number" 
@@ -81,7 +81,7 @@
             min="0.01"
             required
             [disabled]="isGenerating"
-            placeholder="Enter total amount"
+            [placeholder]="'BILLING.ENTER_TOTAL_AMOUNT' | translate"
           />
         </div>
 
@@ -92,7 +92,7 @@
             (click)="resetForm()"
             [disabled]="isGenerating"
           >
-            Reset
+            {{ 'BILLING.RESET' | translate }}
           </button>
           <button 
             type="submit" 
@@ -100,9 +100,9 @@
             [disabled]="isGenerating || isLoading"
           >
             @if (isGenerating) {
-              <span>Generating...</span>
+              <span>{{ 'BILLING.GENERATING' | translate }}</span>
             } @else {
-              <span>Generate Invoice</span>
+              <span>{{ 'BILLING.GENERATE_INVOICE' | translate }}</span>
             }
           </button>
         </div>
@@ -110,7 +110,7 @@
 
       @if (isLoading) {
         <div class="loading-state">
-          <p>Loading students...</p>
+          <p>{{ 'BILLING.LOADING_STUDENTS' | translate }}</p>
         </div>
       }
     </div>

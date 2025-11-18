@@ -200,6 +200,26 @@
     "HOURLY_RATE_HINT": "Si no se especifica, usará la tarifa por hora de asistencia",
     "PAYMENT_METHOD": "Método de Pago"
   },
+  "BILLING": {
+    "TITLE": "Facturación",
+    "SUBTITLE": "Generar facturas para estudiantes",
+    "GENERATE_INVOICE": "Generar Factura",
+    "STUDENT": "Estudiante",
+    "SELECT_STUDENT": "Seleccionar un estudiante",
+    "HOURS_STUDIED": "Horas Estudiadas",
+    "TOTAL_AMOUNT": "Importe Total",
+    "ENTER_HOURS_STUDIED": "Ingresa las horas estudiadas",
+    "ENTER_TOTAL_AMOUNT": "Ingresa el importe total",
+    "RESET": "Restablecer",
+    "GENERATING": "Generando...",
+    "LOADING_STUDENTS": "Cargando estudiantes...",
+    "INVOICE_GENERATED_SUCCESS": "¡Factura generada exitosamente!",
+    "ERROR_LOADING_STUDENTS": "Error al cargar estudiantes. Por favor, inténtalo de nuevo.",
+    "ERROR_ALL_FIELDS_REQUIRED": "Todos los campos son obligatorios",
+    "ERROR_MUST_BE_NUMBERS": "Las horas estudiadas y el importe total deben ser números",
+    "ERROR_MUST_BE_POSITIVE": "Las horas estudiadas y el importe total deben ser números positivos",
+    "ERROR_GENERATING_INVOICE": "Error al generar la factura. Por favor, inténtalo de nuevo."
+  },
   "FOOTER": {
     "DESCRIPTION": "Sistema de gestión de estudiantes Academia Main().",
     "QUICK_LINKS": "Enlaces rápidos",

@@ -23,7 +23,7 @@ export class TranslationService {
   }
 
   private getInitialLanguageFromBrowser(): string {
-    const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
+    const browserLang = navigator.language || (navigator as any).userLanguage || 'es';
     
     if (browserLang.startsWith('es')) {
       return 'es';
@@ -37,7 +37,7 @@ export class TranslationService {
     } catch (e) {
     }
     
-    return 'en';
+    return 'es';
   }
 
   setLanguage(lang: string) {

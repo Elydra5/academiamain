@@ -13,13 +13,13 @@ export class LocationService {
 
   getDefaultLanguage(): Observable<string> {
     if (this.cachedCountry) {
-      return of(this.cachedCountry === 'ES' ? 'es' : 'en');
+      return of('es');
     }
 
     return this.detectCountry().pipe(
       map((countryCode) => {
         this.cachedCountry = countryCode;
-        return countryCode === 'ES' ? 'es' : 'en';
+        return 'es';
       }),
       catchError(() => {
         const browserLang = this.getLanguageFromBrowser();
@@ -42,7 +42,7 @@ export class LocationService {
   }
 
   private getLanguageFromBrowser(): string {
-    const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
+    const browserLang = navigator.language || (navigator as any).userLanguage || 'es';
     
     if (browserLang.startsWith('es')) {
       return 'es';
@@ -55,8 +55,7 @@ export class LocationService {
       }
     } catch (e) {
     }
-    
-    return 'en';
+    return 'es';
   }
 }
 

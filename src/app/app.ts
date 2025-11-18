@@ -45,7 +45,7 @@ export class App {
   }
 
   private getInitialLanguageFromBrowser(): string {
-    const browserLang = navigator.language || (navigator as any).userLanguage || 'en';
+    const browserLang = navigator.language || (navigator as any).userLanguage || 'es';
     
     if (browserLang.startsWith('es')) {
       return 'es';
@@ -59,6 +59,6 @@ export class App {
     } catch (e) {
     }
     
-    return 'en';
+    return 'es';
   }
 }

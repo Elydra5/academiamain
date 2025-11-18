@@ -1,11 +1,30 @@
 {
   "NAVBAR": {
+    "DASHBOARD": "Dashboard",
     "STUDENTS": "Students",
     "GROUPS": "Groups",
     "USERS": "Users",
     "ATTENDANCE": "Attendance",
     "BILLING": "Billing",
     "LOGOUT": "Logout"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "SUBTITLE": "Overview of the academy",
+    "REFRESH": "Refresh",
+    "STUDENTS": "Students",
+    "ACTIVE_GROUPS": "Active Groups",
+    "TODAY_ATTENDANCE": "Today's Attendance",
+    "MONTHLY_REVENUE": "Monthly Revenue",
+    "ATTENDANCE_TRENDS": "Attendance Trends",
+    "LAST_30_DAYS": "Last 30 days",
+    "GROUP_DISTRIBUTION": "Group Distribution",
+    "STUDENTS_PER_GROUP": "Students per group",
+    "MONTHLY_BILLING": "Monthly Billing",
+    "LAST_12_MONTHS": "Last 12 months",
+    "NO_DATA": "No data available",
+    "ATTENDANCES": "attendances",
+    "RECEIPTS": "receipts"
   },
   "STUDENTS": {
     "TITLE": "Students",

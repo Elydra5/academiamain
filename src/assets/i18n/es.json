@@ -1,11 +1,30 @@
 {
   "NAVBAR": {
+    "DASHBOARD": "Panel",
     "STUDENTS": "Estudiantes",
     "GROUPS": "Grupos",
     "USERS": "Usuarios",
     "ATTENDANCE": "Asistencia",
     "BILLING": "Facturación",
     "LOGOUT": "Cerrar sesión"
+  },
+  "DASHBOARD": {
+    "TITLE": "Panel de Control",
+    "SUBTITLE": "Vista general de la academia",
+    "REFRESH": "Actualizar",
+    "STUDENTS": "Estudiantes",
+    "ACTIVE_GROUPS": "Grupos Activos",
+    "TODAY_ATTENDANCE": "Asistencia de Hoy",
+    "MONTHLY_REVENUE": "Ingresos Mensuales",
+    "ATTENDANCE_TRENDS": "Tendencias de Asistencia",
+    "LAST_30_DAYS": "Últimos 30 días",
+    "GROUP_DISTRIBUTION": "Distribución de Grupos",
+    "STUDENTS_PER_GROUP": "Estudiantes por grupo",
+    "MONTHLY_BILLING": "Facturación Mensual",
+    "LAST_12_MONTHS": "Últimos 12 meses",
+    "NO_DATA": "No hay datos disponibles",
+    "ATTENDANCES": "asistencias",
+    "RECEIPTS": "recibos"
   },
   "STUDENTS": {
     "TITLE": "Estudiantes",

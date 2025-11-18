@@ -77,7 +77,7 @@ export class Login implements OnInit {
         if (token) {
           this.authService.setToken(token);
           this.isLoading = false;
-          this.router.navigate(['/students']);
+          this.router.navigate(['/dashboard']);
         } else {
           this.isLoading = false;
           this.errorMessage = 'No token received from server.';

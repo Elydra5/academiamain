@@ -1,6 +1,7 @@
 {
   "NAVBAR": {
     "DASHBOARD": "Panel",
+    "USER_MANAGEMENT": "Gestión de Usuarios",
     "STUDENTS": "Estudiantes",
     "GROUPS": "Grupos",
     "USERS": "Usuarios",

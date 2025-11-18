@@ -15,6 +15,7 @@ export class Navbar implements OnInit, OnDestroy {
   isAuthenticated = false;
   currentLang = 'es';
   isMobileMenuOpen = false;
+  isUserManagementOpen = false;
   private authSubscription?: Subscription;
 
   constructor(
@@ -68,5 +69,18 @@ export class Navbar implements OnInit, OnDestroy {
     } else {
       document.body.style.overflow = '';
     }
+  }
+
+  toggleUserManagement() {
+    this.isUserManagementOpen = !this.isUserManagementOpen;
+  }
+
+  closeUserManagement() {
+    this.isUserManagementOpen = false;
+  }
+
+  isRouteActive(routes: string[]): boolean {
+    const currentUrl = this.router.url;
+    return routes.some(route => currentUrl.startsWith(route));
   }
 }

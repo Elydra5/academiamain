@@ -1,6 +1,7 @@
 {
   "NAVBAR": {
     "DASHBOARD": "Dashboard",
+    "USER_MANAGEMENT": "User Management",
     "STUDENTS": "Students",
     "GROUPS": "Groups",
     "USERS": "Users",

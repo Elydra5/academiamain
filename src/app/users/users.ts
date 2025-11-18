@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -99,5 +99,12 @@ export class Users implements OnInit {
       moodle_id: null,
       status: 1
     };
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.isCreateModalOpen) {
+      this.onCancelCreate();
+    }
   }
 }

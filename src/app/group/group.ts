@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -170,5 +170,12 @@ export class Group implements OnInit {
     if (statusLower === 'active') return this.translate.instant('GROUP.ACTIVE');
     if (statusLower === 'inactive') return this.translate.instant('GROUP.INACTIVE');
     return status;
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.isEditModalOpen) {
+      this.onCancel();
+    }
   }
 }

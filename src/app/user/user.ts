@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -156,5 +156,12 @@ export class User implements OnInit {
 
   getStatusText(status: number): string {
     return status === 1 ? this.translate.instant('USER.ACTIVE') : this.translate.instant('USER.INACTIVE');
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    if (event.key === 'Escape' && this.isEditModalOpen) {
+      this.onCancel();
+    }
   }
 }

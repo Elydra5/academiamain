@@ -397,9 +397,24 @@
 }
 
 .mobile-nav-link.active {
-  background: var(--primary-gradient);
-  color: white !important;
-  border-color: transparent;
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--primary-color) !important;
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.mobile-nav-link.active svg {
+  stroke: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.mobile-dropdown-toggle:not(.active) {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+.mobile-dropdown-toggle:not(.active) svg {
+  stroke: var(--text-secondary) !important;
+  color: var(--text-secondary) !important;
 }
 
 .mobile-nav-link svg {

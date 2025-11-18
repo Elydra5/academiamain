@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth';
@@ -12,6 +12,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit, OnDestroy {
+  @ViewChild('userManagementDropdown', { static: false }) userManagementDropdown?: ElementRef;
+  @ViewChild('userManagementDropdownMobile', { static: false }) userManagementDropdownMobile?: ElementRef;
   isAuthenticated = false;
   currentLang = 'es';
   isMobileMenuOpen = false;
@@ -71,12 +73,31 @@ export class Navbar implements OnInit, OnDestroy {
     }
   }
 
-  toggleUserManagement() {
+  toggleUserManagement(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     this.isUserManagementOpen = !this.isUserManagementOpen;
   }
 
   closeUserManagement() {
     this.isUserManagementOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (this.isUserManagementOpen) {
+      const target = event.target as HTMLElement;
+      const dropdownElement = this.userManagementDropdown?.nativeElement;
+      const mobileDropdownElement = this.userManagementDropdownMobile?.nativeElement;
+      
+      const isClickInsideDesktop = dropdownElement && dropdownElement.contains(target);
+      const isClickInsideMobile = mobileDropdownElement && mobileDropdownElement.contains(target);
+      
+      if (!isClickInsideDesktop && !isClickInsideMobile) {
+        this.closeUserManagement();
+      }
+    }
   }
 
   isRouteActive(routes: string[]): boolean {

@@ -14,6 +14,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class Navbar implements OnInit, OnDestroy {
   isAuthenticated = false;
   currentLang = 'es';
+  isMobileMenuOpen = false;
   private authSubscription?: Subscription;
 
   constructor(
@@ -38,6 +39,7 @@ export class Navbar implements OnInit, OnDestroy {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
     }
+    document.body.style.overflow = '';
   }
 
   logout() {
@@ -48,5 +50,23 @@ export class Navbar implements OnInit, OnDestroy {
   switchLanguage(lang: string) {
     this.translate.use(lang);
     this.currentLang = lang;
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    this.updateBodyScroll();
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+    this.updateBodyScroll();
+  }
+
+  private updateBodyScroll() {
+    if (this.isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }
 }

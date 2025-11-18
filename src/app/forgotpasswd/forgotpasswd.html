@@ -33,17 +33,25 @@
       </div>
 
       <button type="submit" class="submit-btn" [disabled]="forgotForm.invalid || isLoading">
-        <span *ngIf="!isLoading">Send Reset Link</span>
-        <span *ngIf="isLoading">Sending...</span>
+        @if (!isLoading) {
+          <span>Send Reset Link</span>
+        }
+        @if (isLoading) {
+          <span>Sending...</span>
+        }
       </button>
 
-      <div *ngIf="successMessage" class="success-message">
-        {{ successMessage }}
-      </div>
+      @if (successMessage) {
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+      }
 
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
     </form>
   </div>
 </div>

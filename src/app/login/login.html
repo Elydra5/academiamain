@@ -72,13 +72,19 @@
         </div>
 
         <button type="submit" class="submit-btn" [disabled]="loginForm.invalid || isLoading">
-          <span *ngIf="!isLoading">{{ 'LOGIN.SIGN_IN_BUTTON' | translate }}</span>
-          <span *ngIf="isLoading">{{ 'LOGIN.LOADING' | translate }}</span>
+          @if (!isLoading) {
+            <span>{{ 'LOGIN.SIGN_IN_BUTTON' | translate }}</span>
+          }
+          @if (isLoading) {
+            <span>{{ 'LOGIN.LOADING' | translate }}</span>
+          }
         </button>
 
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
+        @if (errorMessage) {
+          <div class="error-message">
+            {{ errorMessage }}
+          </div>
+        }
       </form>
 
       <!-- Register Form -->
@@ -135,19 +141,26 @@
             placeholder="Confirm your password">
         </div>
 
-        <div *ngIf="registerData.password && registerData.passwordConfirm && registerData.password !== registerData.passwordConfirm" 
-             class="error-message">
-          Passwords do not match
-        </div>
+        @if (registerData.password && registerData.passwordConfirm && registerData.password !== registerData.passwordConfirm) {
+          <div class="error-message">
+            Passwords do not match
+          </div>
+        }
 
         <button type="submit" class="submit-btn" [disabled]="registerForm.invalid || isLoading || registerData.password !== registerData.passwordConfirm">
-          <span *ngIf="!isLoading">Sign Up</span>
-          <span *ngIf="isLoading">Loading...</span>
+          @if (!isLoading) {
+            <span>Sign Up</span>
+          }
+          @if (isLoading) {
+            <span>Loading...</span>
+          }
         </button>
 
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
-        </div>
+        @if (errorMessage) {
+          <div class="error-message">
+            {{ errorMessage }}
+          </div>
+        }
       </form> -->
     </div>
   </div>

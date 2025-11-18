@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -368,6 +368,19 @@ export class Attendance implements OnInit {
       return `${year}-${month}-${day}`;
     } catch {
       return '';
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      if (this.isCreateModalOpen) {
+        this.onCancelCreate();
+      } else if (this.isEditModalOpen) {
+        this.onCancelEdit();
+      } else if (this.isReceiptModalOpen) {
+        this.onCancelReceipt();
+      }
     }
   }
 }

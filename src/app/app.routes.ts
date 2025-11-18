@@ -7,6 +7,7 @@ import { Users } from './users/users';
 import { Attendance } from './attendance/attendance';
 import { Billing } from './billing/billing';
 import { Dashboard } from './dashboard/dashboard';
+import { Calendar } from './calendar/calendar';
 import { Group } from './group/group';
 import { Student } from './student/student';
 import { User } from './user/user';
@@ -17,6 +18,7 @@ export const routes: Routes = [
     {path: 'login', component: Login},
     {path: 'forgot-password', component: Forgotpasswd},
     {path: 'dashboard', component: Dashboard, canActivate: [authGuard]},
+    {path: 'calendar', component: Calendar, canActivate: [authGuard]},
     {path: 'students', component: Students, canActivate: [authGuard]},
     {path: 'student/:id', component: Student, canActivate: [authGuard]},
     {path: 'groups', component: Groups, canActivate: [authGuard]},

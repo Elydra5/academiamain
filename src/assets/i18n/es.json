@@ -5,6 +5,7 @@
     "GROUPS": "Grupos",
     "USERS": "Usuarios",
     "ATTENDANCE": "Asistencia",
+    "CALENDAR": "Calendario",
     "BILLING": "Facturación",
     "LOGOUT": "Cerrar sesión"
   },
@@ -261,5 +262,27 @@
     "SUPPORT": "Soporte",
     "LANGUAGE": "Idioma",
     "ALL_RIGHTS_RESERVED": "Todos los derechos reservados."
+  },
+  "CALENDAR": {
+    "TITLE": "Calendario",
+    "SUBTITLE": "Vista de horarios y eventos",
+    "MONTH": "Mes",
+    "WEEK": "Semana",
+    "DAY": "Día",
+    "TODAY": "Hoy",
+    "MON": "Lun",
+    "TUE": "Mar",
+    "WED": "Mié",
+    "THU": "Jue",
+    "FRI": "Vie",
+    "SAT": "Sáb",
+    "SUN": "Dom",
+    "EVENTS": "Eventos",
+    "SCHEDULE": "Horario",
+    "NO_EVENTS": "No hay eventos para este día",
+    "NO_SCHEDULE": "No hay horarios para este día",
+    "MINUTES": "minutos",
+    "STUDENTS": "estudiantes",
+    "TEACHER": "Profesor"
   }
 }

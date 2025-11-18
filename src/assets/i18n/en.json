@@ -5,6 +5,7 @@
     "GROUPS": "Groups",
     "USERS": "Users",
     "ATTENDANCE": "Attendance",
+    "CALENDAR": "Calendar",
     "BILLING": "Billing",
     "LOGOUT": "Logout"
   },
@@ -261,5 +262,27 @@
     "SUPPORT": "Support",
     "LANGUAGE": "Language",
     "ALL_RIGHTS_RESERVED": "All rights reserved."
+  },
+  "CALENDAR": {
+    "TITLE": "Calendar",
+    "SUBTITLE": "View schedules and events",
+    "MONTH": "Month",
+    "WEEK": "Week",
+    "DAY": "Day",
+    "TODAY": "Today",
+    "MON": "Mon",
+    "TUE": "Tue",
+    "WED": "Wed",
+    "THU": "Thu",
+    "FRI": "Fri",
+    "SAT": "Sat",
+    "SUN": "Sun",
+    "EVENTS": "Events",
+    "SCHEDULE": "Schedule",
+    "NO_EVENTS": "No events for this day",
+    "NO_SCHEDULE": "No schedule for this day",
+    "MINUTES": "minutes",
+    "STUDENTS": "students",
+    "TEACHER": "Teacher"
   }
 }

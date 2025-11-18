@@ -1,0 +1,205 @@
+<div class="page-container">
+  <div class="header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="title">{{ 'CALENDAR.TITLE' | translate }}</h1>
+        <p class="subtitle">{{ 'CALENDAR.SUBTITLE' | translate }}</p>
+      </div>
+      <div class="header-actions">
+        <div class="view-mode-selector">
+          <button 
+            class="view-btn" 
+            [class.active]="viewMode === 'month'"
+            (click)="setViewMode('month')"
+          >
+            {{ 'CALENDAR.MONTH' | translate }}
+          </button>
+          <button 
+            class="view-btn" 
+            [class.active]="viewMode === 'week'"
+            (click)="setViewMode('week')"
+          >
+            {{ 'CALENDAR.WEEK' | translate }}
+          </button>
+          <button 
+            class="view-btn" 
+            [class.active]="viewMode === 'day'"
+            (click)="setViewMode('day')"
+          >
+            {{ 'CALENDAR.DAY' | translate }}
+          </button>
+        </div>
+        <button class="today-btn" (click)="goToToday()">
+          {{ 'CALENDAR.TODAY' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-controls">
+    <button class="nav-btn" (click)="previousPeriod()">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <h2 class="period-title">
+      @if (viewMode === 'month') {
+        {{ getMonthName(currentMonth) }} {{ currentYear }}
+      } @else if (viewMode === 'week') {
+        {{ getWeekStart(currentDate).toLocaleDateString() }} - {{ getWeekEnd(currentDate).toLocaleDateString() }}
+      } @else {
+        {{ currentDate.toLocaleDateString() }}
+      }
+    </h2>
+    <button class="nav-btn" (click)="nextPeriod()">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>{{ 'COMMON.LOADING' | translate }}</p>
+    </div>
+  } @else {
+    @if (viewMode === 'month') {
+      <div class="calendar-month">
+        <div class="calendar-weekdays">
+          <div class="weekday">{{ 'CALENDAR.MON' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.TUE' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.WED' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.THU' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.FRI' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.SAT' | translate }}</div>
+          <div class="weekday">{{ 'CALENDAR.SUN' | translate }}</div>
+        </div>
+        <div class="calendar-days">
+          @for (day of getDaysInMonth(currentYear, currentMonth); track day.getTime()) {
+            <div 
+              class="calendar-day" 
+              [class.today]="isToday(day)"
+              [class.other-month]="!isCurrentMonth(day)"
+            >
+              <div class="day-number">{{ day.getDate() }}</div>
+              <div class="day-events">
+                @for (event of getEventsForDate(formatDate(day)); track event.id) {
+                  <div 
+                    class="event-badge" 
+                    [style.background-color]="getEventColor(event.type)"
+                    [title]="event.title"
+                  >
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="white" stroke-width="2">
+                      <path [attr.d]="getEventIconPath(event.type)"/>
+                    </svg>
+                  </div>
+                }
+                @for (schedule of getScheduleForDate(formatDate(day)); track schedule.id) {
+                  <div 
+                    class="schedule-badge"
+                    [title]="schedule.group_name + ' - ' + schedule.teacher"
+                  >
+                    {{ schedule.group_name }}
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    } @else if (viewMode === 'week') {
+      <div class="calendar-week">
+        @for (day of getWeekDays(); track day.getTime()) {
+          <div class="week-day" [class.today]="isToday(day)">
+            <div class="week-day-header">
+              <div class="week-day-name">{{ day.toLocaleDateString(undefined, { weekday: 'short' }) }}</div>
+              <div class="week-day-number" [class.today-number]="isToday(day)">{{ day.getDate() }}</div>
+            </div>
+            <div class="week-day-content">
+              @for (event of getEventsForDate(formatDate(day)); track event.id) {
+                <div 
+                  class="week-event"
+                  [style.border-left-color]="getEventColor(event.type)"
+                >
+                  <div class="event-title">{{ event.title }}</div>
+                  @if (event.description) {
+                    <div class="event-description">{{ event.description }}</div>
+                  }
+                </div>
+              }
+              @for (schedule of getScheduleForDate(formatDate(day)); track schedule.id) {
+                <div class="week-schedule">
+                  <div class="schedule-group">{{ schedule.group_name }}</div>
+                  <div class="schedule-details">
+                    <span>{{ schedule.teacher }}</span>
+                    <span>{{ schedule.duration }} {{ 'CALENDAR.MINUTES' | translate }}</span>
+                    <span>{{ schedule.student_count }} {{ 'CALENDAR.STUDENTS' | translate }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="calendar-day-view">
+        <div class="day-header">
+          <h3>{{ currentDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }}</h3>
+        </div>
+        <div class="day-content">
+          <div class="day-section">
+            <h4>{{ 'CALENDAR.EVENTS' | translate }}</h4>
+            @if (getEventsForDate(formatDate(currentDate)).length === 0) {
+              <p class="empty-message">{{ 'CALENDAR.NO_EVENTS' | translate }}</p>
+            } @else {
+              @for (event of getEventsForDate(formatDate(currentDate)); track event.id) {
+                <div 
+                  class="day-event-card"
+                  [style.border-left-color]="getEventColor(event.type)"
+                >
+                  <div class="event-icon" [style.background-color]="getEventColor(event.type)">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" stroke-width="2">
+                      <path [attr.d]="getEventIconPath(event.type)"/>
+                    </svg>
+                  </div>
+                  <div class="event-content">
+                    <div class="event-title">{{ event.title }}</div>
+                    @if (event.description) {
+                      <div class="event-description">{{ event.description }}</div>
+                    }
+                    @if (event.type === 'payment_deadline' && event.amount) {
+                      <div class="event-amount">{{ event.amount }} HUF</div>
+                    }
+                  </div>
+                </div>
+              }
+            }
+          </div>
+          <div class="day-section">
+            <h4>{{ 'CALENDAR.SCHEDULE' | translate }}</h4>
+            @if (getScheduleForDate(formatDate(currentDate)).length === 0) {
+              <p class="empty-message">{{ 'CALENDAR.NO_SCHEDULE' | translate }}</p>
+            } @else {
+              @for (schedule of getScheduleForDate(formatDate(currentDate)); track schedule.id) {
+                <div class="day-schedule-card">
+                  <div class="schedule-header">
+                    <h5>{{ schedule.group_name }}</h5>
+                    <span class="schedule-duration">{{ schedule.duration }} {{ 'CALENDAR.MINUTES' | translate }}</span>
+                  </div>
+                  <div class="schedule-details">
+                    <span><strong>{{ 'CALENDAR.TEACHER' | translate }}:</strong> {{ schedule.teacher }}</span>
+                    <span><strong>{{ 'CALENDAR.STUDENTS' | translate }}:</strong> {{ schedule.student_count }}</span>
+                  </div>
+                  @if (schedule.group_description) {
+                    <p class="schedule-description">{{ schedule.group_description }}</p>
+                  }
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

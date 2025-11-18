@@ -151,7 +151,15 @@
       </div>
       <div class="form-group">
         <label for="createPhone">{{ 'STUDENTS.PHONE_NUMBER' | translate }}</label>
-        <input id="createPhone" type="text" [(ngModel)]="newStudent.phone" class="form-input">
+        <input
+          id="createPhone"
+          type="tel"
+          inputmode="tel"
+          pattern="^\+?[0-9\s()-]{7,20}$"
+          maxlength="20"
+          [(ngModel)]="newStudent.phone"
+          class="form-input"
+        >
       </div>
     </div>
     <div class="modal-footer">

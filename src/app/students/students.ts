@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-students',
@@ -16,7 +16,8 @@ export class Students implements OnInit {
   
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private translate: TranslateService
   ) {}
 
   students: any[] = [];
@@ -101,8 +102,28 @@ export class Students implements OnInit {
     this.isCreateModalOpen = true;
   }
 
+  private isPhoneValid(phone: string): boolean {
+    const normalized = phone.trim();
+    if (!normalized) {
+      return false;
+    }
+    const phoneRegex = /^\+?[0-9\s()-]{7,20}$/;
+    return phoneRegex.test(normalized);
+  }
+
   onCreateStudent() {
-    this.http.post(this.apiUrl, this.newStudent).subscribe({
+    const trimmedPhone = (this.newStudent.phone || '').trim();
+    if (trimmedPhone && !this.isPhoneValid(trimmedPhone)) {
+      alert(this.translate.instant('COMMON.INVALID_PHONE'));
+      return;
+    }
+
+    const payload = {
+      ...this.newStudent,
+      phone: trimmedPhone
+    };
+
+    this.http.post(this.apiUrl, payload).subscribe({
       next: (createdStudent: any) => {
         this.students.push(createdStudent);
         this.updatePagination();

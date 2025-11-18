@@ -129,7 +129,15 @@
       </div>
       <div class="form-group">
         <label for="phone">{{ 'STUDENT.PHONE_NUMBER' | translate }}</label>
-        <input id="phone" type="text" [(ngModel)]="editingStudent.phone" class="form-input">
+        <input
+          id="phone"
+          type="tel"
+          inputmode="tel"
+          pattern="^\+?[0-9\s()-]{7,20}$"
+          maxlength="20"
+          [(ngModel)]="editingStudent.phone"
+          class="form-input"
+        >
       </div>
       <div class="form-group">
         <label for="enrollmentDate">{{ 'STUDENT.ENROLLMENT_DATE_LABEL' | translate }}</label>

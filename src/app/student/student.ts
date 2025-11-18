@@ -117,6 +117,14 @@ export class Student implements OnInit {
   }
 
   onSave() {
+    const trimmedPhone = (this.editingStudent.phone || '').trim();
+    if (trimmedPhone && !this.isPhoneValid(trimmedPhone)) {
+      alert(this.translate.instant('COMMON.INVALID_PHONE'));
+      return;
+    }
+
+    this.editingStudent.phone = trimmedPhone;
+
     this.http.patch(`${this.apiUrl}/${this.editingStudent.id}`, this.editingStudent).subscribe({
       next: (updatedStudent: any) => {
         this.student = { ...updatedStudent };
@@ -191,5 +199,14 @@ export class Student implements OnInit {
     } catch (e) {
       return dateString;
     }
+  }
+
+  private isPhoneValid(phone: string): boolean {
+    const normalized = phone.trim();
+    if (!normalized) {
+      return false;
+    }
+    const phoneRegex = /^\+?[0-9\s()-]{7,20}$/;
+    return phoneRegex.test(normalized);
   }
 }

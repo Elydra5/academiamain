@@ -169,7 +169,8 @@
     "CREATE": "Create",
     "PREVIOUS": "Previous",
     "NEXT": "Next",
-    "ACTIONS": "Actions"
+    "ACTIONS": "Actions",
+    "INVALID_PHONE": "Please enter a valid phone number (digits, spaces, +, -, ())."
   },
   "ATTENDANCE": {
     "TITLE": "Attendance",
@@ -199,6 +200,26 @@
     "HOURS_HINT": "If not specified, will use duration / 60",
     "HOURLY_RATE_HINT": "If not specified, will use attendance hourly rate",
     "PAYMENT_METHOD": "Payment Method"
+  },
+  "BILLING": {
+    "TITLE": "Billing",
+    "SUBTITLE": "Generate invoices for students",
+    "GENERATE_INVOICE": "Generate Invoice",
+    "STUDENT": "Student",
+    "SELECT_STUDENT": "Select a student",
+    "HOURS_STUDIED": "Hours Studied",
+    "TOTAL_AMOUNT": "Total Amount",
+    "ENTER_HOURS_STUDIED": "Enter hours studied",
+    "ENTER_TOTAL_AMOUNT": "Enter total amount",
+    "RESET": "Reset",
+    "GENERATING": "Generating...",
+    "LOADING_STUDENTS": "Loading students...",
+    "INVOICE_GENERATED_SUCCESS": "Invoice generated successfully!",
+    "ERROR_LOADING_STUDENTS": "Error loading students. Please try again.",
+    "ERROR_ALL_FIELDS_REQUIRED": "All fields are required",
+    "ERROR_MUST_BE_NUMBERS": "Hours studied and total amount must be numbers",
+    "ERROR_MUST_BE_POSITIVE": "Hours studied and total amount must be positive numbers",
+    "ERROR_GENERATING_INVOICE": "Error generating invoice. Please try again."
   },
   "FOOTER": {
     "DESCRIPTION": "Academia Main() student management system.",

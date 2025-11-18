@@ -169,7 +169,8 @@
     "CREATE": "Crear",
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente",
-    "ACTIONS": "Acciones"
+    "ACTIONS": "Acciones",
+    "INVALID_PHONE": "Introduce un número de teléfono válido (dígitos, espacios, +, -, ())."
   },
   "ATTENDANCE": {
     "TITLE": "Asistencia",

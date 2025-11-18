@@ -170,7 +170,22 @@
     "PREVIOUS": "Previous",
     "NEXT": "Next",
     "ACTIONS": "Actions",
-    "INVALID_PHONE": "Please enter a valid phone number (digits, spaces, +, -, ())."
+    "INVALID_PHONE": "Please enter a valid phone number (digits, spaces, +, -, ()).",
+    "USER_CREATED_SUCCESS": "User created successfully!",
+    "ERROR_CREATING_USER": "Error creating user. Please try again.",
+    "GROUP_CREATED_SUCCESS": "Group created successfully!",
+    "ERROR_CREATING_GROUP": "Error creating group. Please try again.",
+    "STUDENT_CREATED_SUCCESS": "Student created successfully!",
+    "ERROR_CREATING_STUDENT": "Error creating student. Please try again.",
+    "ATTENDANCE_CREATED_SUCCESS": "Attendance created successfully!",
+    "ATTENDANCE_UPDATED_SUCCESS": "Attendance updated successfully!",
+    "ATTENDANCE_DELETED_SUCCESS": "Attendance deleted successfully!",
+    "ERROR_DELETING_ATTENDANCE": "Error deleting attendance. Please try again.",
+    "RECEIPT_ALREADY_GENERATED": "Receipt already generated for this attendance.",
+    "RECEIPT_GENERATED_SUCCESS": "Receipt generated successfully!",
+    "ERROR_ALL_FIELDS_REQUIRED": "All fields are required",
+    "ERROR_CREATING_ATTENDANCE": "Error creating attendance. Please try again.",
+    "ERROR_UPDATING_ATTENDANCE": "Error updating attendance. Please try again."
   },
   "ATTENDANCE": {
     "TITLE": "Attendance",

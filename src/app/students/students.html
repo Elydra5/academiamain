@@ -158,8 +158,13 @@
           pattern="^\+?[0-9\s()-]{7,20}$"
           maxlength="20"
           [(ngModel)]="newStudent.phone"
+          (input)="onPhoneInput()"
+          [class.form-input-invalid]="isPhoneInvalid"
           class="form-input"
         >
+        @if (isPhoneInvalid) {
+          <span class="error-message">{{ 'COMMON.INVALID_PHONE' | translate }}</span>
+        }
       </div>
     </div>
     <div class="modal-footer">

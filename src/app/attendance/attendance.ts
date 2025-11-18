@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-attendance',
@@ -19,7 +20,9 @@ export class Attendance implements OnInit {
   
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   attendances: any[] = [];
@@ -33,7 +36,6 @@ export class Attendance implements OnInit {
   isGeneratingReceipt = false;
   
   errorMessage = '';
-  successMessage = '';
   
   newAttendance: any = {
     group_id: null,
@@ -121,14 +123,13 @@ export class Attendance implements OnInit {
       hourly_rate: null
     };
     this.errorMessage = '';
-    this.successMessage = '';
     this.isCreateModalOpen = true;
   }
 
   onCreateAttendance() {
     if (!this.newAttendance.group_id || !this.newAttendance.student_id || !this.newAttendance.date || 
         !this.newAttendance.duration || !this.newAttendance.teacher || !this.newAttendance.hourly_rate) {
-      this.errorMessage = 'All fields are required';
+      this.errorMessage = this.translate.instant('COMMON.ERROR_ALL_FIELDS_REQUIRED');
       return;
     }
 
@@ -145,12 +146,11 @@ export class Attendance implements OnInit {
       next: (createdAttendance: any) => {
         this.attendances.push(createdAttendance);
         this.isCreateModalOpen = false;
-        this.successMessage = 'Attendance created successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.notificationService.success(this.translate.instant('COMMON.ATTENDANCE_CREATED_SUCCESS'));
       },
       error: (error) => {
         console.error('Error creating attendance:', error);
-        this.errorMessage = error.error?.message || 'Error creating attendance. Please try again.';
+        this.errorMessage = error.error?.message || this.translate.instant('COMMON.ERROR_CREATING_ATTENDANCE');
       }
     });
   }
@@ -175,14 +175,13 @@ export class Attendance implements OnInit {
       date: this.formatDateForInput(attendance.date)
     };
     this.errorMessage = '';
-    this.successMessage = '';
     this.isEditModalOpen = true;
   }
 
   onUpdateAttendance() {
     if (!this.editingAttendance.group_id || !this.editingAttendance.student_id || !this.editingAttendance.date || 
         !this.editingAttendance.duration || !this.editingAttendance.teacher || !this.editingAttendance.hourly_rate) {
-      this.errorMessage = 'All fields are required';
+      this.errorMessage = this.translate.instant('COMMON.ERROR_ALL_FIELDS_REQUIRED');
       return;
     }
 
@@ -201,12 +200,11 @@ export class Attendance implements OnInit {
           this.attendances[index] = { ...this.editingAttendance };
         }
         this.isEditModalOpen = false;
-        this.successMessage = 'Attendance updated successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.notificationService.success(this.translate.instant('COMMON.ATTENDANCE_UPDATED_SUCCESS'));
       },
       error: (error) => {
         console.error('Error updating attendance:', error);
-        this.errorMessage = error.error?.message || 'Error updating attendance. Please try again.';
+        this.errorMessage = error.error?.message || this.translate.instant('COMMON.ERROR_UPDATING_ATTENDANCE');
       }
     });
   }
@@ -225,19 +223,18 @@ export class Attendance implements OnInit {
     this.http.delete(`${this.apiUrl}/${attendance.id}`).subscribe({
       next: () => {
         this.attendances = this.attendances.filter(a => a.id !== attendance.id);
-        this.successMessage = 'Attendance deleted successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.notificationService.success(this.translate.instant('COMMON.ATTENDANCE_DELETED_SUCCESS'));
       },
       error: (error) => {
         console.error('Error deleting attendance:', error);
-        alert('Error deleting attendance. Please try again.');
+        this.notificationService.error(this.translate.instant('COMMON.ERROR_DELETING_ATTENDANCE'));
       }
     });
   }
 
   openReceiptModal(attendance: any) {
     if (attendance.receipt_id) {
-      alert('Receipt already generated for this attendance.');
+      this.notificationService.warning(this.translate.instant('COMMON.RECEIPT_ALREADY_GENERATED'));
       return;
     }
     
@@ -289,8 +286,7 @@ export class Attendance implements OnInit {
 
         this.isReceiptModalOpen = false;
         this.isGeneratingReceipt = false;
-        this.successMessage = 'Receipt generated successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
+        this.notificationService.success(this.translate.instant('COMMON.RECEIPT_GENERATED_SUCCESS'));
         this.loadAttendances();
       },
       error: (error) => {

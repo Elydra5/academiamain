@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-students',
@@ -17,12 +18,14 @@ export class Students implements OnInit {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private notificationService: NotificationService
   ) {}
 
   students: any[] = [];
   paginatedStudents: any[] = [];
   isCreateModalOpen = false;
+  isPhoneInvalid = false;
   newStudent: any = {
     first_name: '',
     last_name: '',
@@ -99,6 +102,7 @@ export class Students implements OnInit {
       last_name: '',
       phone: ''
     };
+    this.isPhoneInvalid = false;
     this.isCreateModalOpen = true;
   }
 
@@ -111,10 +115,19 @@ export class Students implements OnInit {
     return phoneRegex.test(normalized);
   }
 
+  onPhoneInput() {
+    const phone = (this.newStudent.phone || '').trim();
+    if (phone) {
+      this.isPhoneInvalid = !this.isPhoneValid(phone);
+    } else {
+      this.isPhoneInvalid = false;
+    }
+  }
+
   onCreateStudent() {
     const trimmedPhone = (this.newStudent.phone || '').trim();
     if (trimmedPhone && !this.isPhoneValid(trimmedPhone)) {
-      alert(this.translate.instant('COMMON.INVALID_PHONE'));
+      this.notificationService.error(this.translate.instant('COMMON.INVALID_PHONE'));
       return;
     }
 
@@ -128,17 +141,19 @@ export class Students implements OnInit {
         this.students.push(createdStudent);
         this.updatePagination();
         this.isCreateModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.STUDENT_CREATED_SUCCESS'));
         // console.log('[students] created', createdStudent);
       },
       error: (error) => {
         console.error('Error creating student:', error);
-        alert('Error creating student. Please try again.');
+        this.notificationService.error(this.translate.instant('COMMON.ERROR_CREATING_STUDENT'));
       }
     });
   }
 
   onCancelCreate() {
     this.isCreateModalOpen = false;
+    this.isPhoneInvalid = false;
     this.newStudent = {
       first_name: '',
       last_name: '',

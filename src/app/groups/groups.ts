@@ -3,8 +3,9 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { forkJoin } from 'rxjs';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-groups',
@@ -18,7 +19,9 @@ export class Groups implements OnInit {
   
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   groups: any[] = [];
@@ -140,12 +143,13 @@ export class Groups implements OnInit {
       next: (createdGroup: any) => {
         this.groups.push(createdGroup);
         this.isCreateModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.GROUP_CREATED_SUCCESS'));
         // console.log('[groups] created', createdGroup);
         this.loadGroups();
       },
       error: (error) => {
         console.error('Error creating group:', error);
-        alert('Error creating group. Please try again.');
+        this.notificationService.error(this.translate.instant('COMMON.ERROR_CREATING_GROUP'));
       }
     });
   }

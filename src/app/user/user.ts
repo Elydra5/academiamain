@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-user',
@@ -19,7 +20,8 @@ export class User implements OnInit {
     private http: HttpClient,
     public router: Router,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private notificationService: NotificationService
   ) {}
 
   user: any = {
@@ -102,12 +104,13 @@ export class User implements OnInit {
       next: (updatedUser: any) => {
         this.user = { ...updatedUser };
         this.isEditModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         // console.log('[user] saved', updatedUser);
         this.loadUser(this.user.username);
       },
       error: (error) => {
         console.error('Error updating user:', error);
-        alert(this.translate.instant('COMMON.ERROR'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
@@ -128,12 +131,12 @@ export class User implements OnInit {
     this.http.delete(url).subscribe({
       next: () => {
         // console.log('[user] deleted', u);
-        alert(this.translate.instant('COMMON.SUCCESS'));
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/users']);
       },
       error: (error) => {
         console.error('Error deleting user:', error);
-        alert(this.translate.instant('COMMON.ERROR'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
   }

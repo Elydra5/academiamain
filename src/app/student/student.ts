@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-student',
@@ -20,7 +21,8 @@ export class Student implements OnInit {
     private http: HttpClient,
     public router: Router,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private notificationService: NotificationService
   ) {}
 
   student: any = {
@@ -32,6 +34,7 @@ export class Student implements OnInit {
   };
 
   isEditModalOpen = false;
+  isPhoneInvalid = false;
   editingStudent: any = {};
   groups: Array<{ id: number; name: string }> = [];
   selectedGroupId: number | null = null;
@@ -112,6 +115,7 @@ export class Student implements OnInit {
   onEdit(studentToEdit?: any) {
     const s = studentToEdit ?? this.student;
     this.editingStudent = { ...s }; 
+    this.isPhoneInvalid = false;
     this.isEditModalOpen = true;
     // console.log('[student] edit clicked', s);
   }
@@ -119,7 +123,7 @@ export class Student implements OnInit {
   onSave() {
     const trimmedPhone = (this.editingStudent.phone || '').trim();
     if (trimmedPhone && !this.isPhoneValid(trimmedPhone)) {
-      alert(this.translate.instant('COMMON.INVALID_PHONE'));
+      this.notificationService.error(this.translate.instant('COMMON.INVALID_PHONE'));
       return;
     }
 
@@ -129,17 +133,19 @@ export class Student implements OnInit {
       next: (updatedStudent: any) => {
         this.student = { ...updatedStudent };
         this.isEditModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         // console.log('[student] saved', updatedStudent);
       },
       error: (error) => {
         console.error('Error updating student:', error);
-        alert(this.translate.instant('COMMON.ERROR') + ': ' + this.translate.instant('STUDENT.EDIT_STUDENT'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR') + ': ' + this.translate.instant('STUDENT.EDIT_STUDENT'));
       }
     });
   }
 
   onCancel() {
     this.isEditModalOpen = false;
+    this.isPhoneInvalid = false;
     this.editingStudent = {};
   }
 
@@ -152,12 +158,12 @@ export class Student implements OnInit {
     this.http.delete(`${this.apiUrl}/${s.id}`).subscribe({
       next: () => {
         // console.log('[student] deleted', s);
-        alert(this.translate.instant('COMMON.SUCCESS'));
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/students']);
       },
       error: (error) => {
         console.error('Error deleting student:', error);
-        alert(this.translate.instant('COMMON.ERROR'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
@@ -208,6 +214,15 @@ export class Student implements OnInit {
     }
     const phoneRegex = /^\+?[0-9\s()-]{7,20}$/;
     return phoneRegex.test(normalized);
+  }
+
+  onPhoneInput() {
+    const phone = (this.editingStudent.phone || '').trim();
+    if (phone) {
+      this.isPhoneInvalid = !this.isPhoneValid(phone);
+    } else {
+      this.isPhoneInvalid = false;
+    }
   }
 
   @HostListener('document:keydown', ['$event'])

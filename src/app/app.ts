@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { Navbar } from "./navbar/navbar";
 import { Footer } from "./footer/footer";
+import { NotificationComponent } from "./notification/notification";
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -9,7 +10,7 @@ import { LocationService } from './services/location';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Footer, CommonModule, TranslateModule],
+  imports: [RouterOutlet, Navbar, Footer, NotificationComponent, CommonModule, TranslateModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

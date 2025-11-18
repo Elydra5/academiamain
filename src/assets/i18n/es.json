@@ -170,7 +170,22 @@
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente",
     "ACTIONS": "Acciones",
-    "INVALID_PHONE": "Introduce un número de teléfono válido (dígitos, espacios, +, -, ())."
+    "INVALID_PHONE": "Introduce un número de teléfono válido (dígitos, espacios, +, -, ()).",
+    "USER_CREATED_SUCCESS": "¡Usuario creado exitosamente!",
+    "ERROR_CREATING_USER": "Error al crear usuario. Por favor, inténtalo de nuevo.",
+    "GROUP_CREATED_SUCCESS": "¡Grupo creado exitosamente!",
+    "ERROR_CREATING_GROUP": "Error al crear grupo. Por favor, inténtalo de nuevo.",
+    "STUDENT_CREATED_SUCCESS": "¡Estudiante creado exitosamente!",
+    "ERROR_CREATING_STUDENT": "Error al crear estudiante. Por favor, inténtalo de nuevo.",
+    "ATTENDANCE_CREATED_SUCCESS": "¡Asistencia creada exitosamente!",
+    "ATTENDANCE_UPDATED_SUCCESS": "¡Asistencia actualizada exitosamente!",
+    "ATTENDANCE_DELETED_SUCCESS": "¡Asistencia eliminada exitosamente!",
+    "ERROR_DELETING_ATTENDANCE": "Error al eliminar asistencia. Por favor, inténtalo de nuevo.",
+    "RECEIPT_ALREADY_GENERATED": "El recibo ya ha sido generado para esta asistencia.",
+    "RECEIPT_GENERATED_SUCCESS": "¡Recibo generado exitosamente!",
+    "ERROR_ALL_FIELDS_REQUIRED": "Todos los campos son obligatorios",
+    "ERROR_CREATING_ATTENDANCE": "Error al crear asistencia. Por favor, inténtalo de nuevo.",
+    "ERROR_UPDATING_ATTENDANCE": "Error al actualizar asistencia. Por favor, inténtalo de nuevo."
   },
   "ATTENDANCE": {
     "TITLE": "Asistencia",

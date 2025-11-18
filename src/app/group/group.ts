@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-group',
@@ -19,7 +20,8 @@ export class Group implements OnInit {
     private http: HttpClient,
     public router: Router,
     private cdr: ChangeDetectorRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private notificationService: NotificationService
   ) {}
 
   group: any = {
@@ -112,12 +114,13 @@ export class Group implements OnInit {
       next: (updatedGroup: any) => {
         this.group = { ...updatedGroup };
         this.isEditModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         // console.log('[group] saved', updatedGroup);
         this.loadGroup(this.group.id);
       },
       error: (error) => {
         console.error('Error updating group:', error);
-        alert(this.translate.instant('COMMON.ERROR'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
   }
@@ -136,12 +139,12 @@ export class Group implements OnInit {
     this.http.delete(`${this.apiUrl}/${g.id}`).subscribe({
       next: () => {
         // console.log('[group] deleted', g);
-        alert(this.translate.instant('COMMON.SUCCESS'));
+        this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/groups']);
       },
       error: (error) => {
         console.error('Error deleting group:', error);
-        alert(this.translate.instant('COMMON.ERROR'));
+        this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
   }

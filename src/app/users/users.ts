@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../services/notification';
 
 @Component({
   selector: 'app-users',
@@ -16,7 +17,9 @@ export class Users implements OnInit {
   
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   users: any[] = [];
@@ -77,12 +80,13 @@ export class Users implements OnInit {
       next: (createdUser: any) => {
         this.users.push(createdUser);
         this.isCreateModalOpen = false;
+        this.notificationService.success(this.translate.instant('COMMON.USER_CREATED_SUCCESS'));
         // console.log('[users] created', createdUser);
         this.loadUsers();
       },
       error: (error) => {
         console.error('Error creating user:', error);
-        alert('Error creating user. Please try again.');
+        this.notificationService.error(this.translate.instant('COMMON.ERROR_CREATING_USER'));
       }
     });
   }

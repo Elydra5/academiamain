@@ -101,7 +101,7 @@ export class Attendance implements OnInit {
     this.http.get<any[]>(this.adminUrl).subscribe({
       next: (users) => {
         this.teachers = users || [];
-        console.log('Loaded teachers:', this.teachers);
+        // console.log('Loaded teachers:', this.teachers);
       },
       error: (error) => {
         console.error('Error loading teachers:', error);

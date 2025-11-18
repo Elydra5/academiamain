@@ -8,17 +8,17 @@
         type="button">
         Login
       </button>
-      <button 
+      <!-- <button 
         class="tab-btn" 
         [class.active]="!isLoginMode" 
         (click)="switchToRegister()"
         type="button">
         Register
-      </button>
-      <div class="tab-indicator" [class.register]="!isLoginMode"></div>
+      </button> -->
+      <!-- <div class="tab-indicator" [class.register]="!isLoginMode"></div> -->
     </div>
 
-    <div class="form-container" [class.register-mode]="!isLoginMode">
+    <div class="form-container"> <!-- [class.register-mode]="!isLoginMode" -->
       <form class="login-form" [class.hidden]="!isLoginMode" (ngSubmit)="onLogin()" #loginForm="ngForm">
         <h2 class="form-title">Welcome Back</h2>
         <p class="form-subtitle">Sign in to your account</p>
@@ -62,7 +62,7 @@
       </form>
 
       <!-- Register Form -->
-      <form class="register-form" [class.hidden]="isLoginMode" (ngSubmit)="onRegister()" #registerForm="ngForm">
+      <!-- <form class="register-form" [class.hidden]="isLoginMode" (ngSubmit)="onRegister()" #registerForm="ngForm">
         <h2 class="form-title">Create Account</h2>
         <p class="form-subtitle">Sign up to get started</p>
 
@@ -128,7 +128,7 @@
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>
-      </form>
+      </form> -->
     </div>
   </div>
 </div>

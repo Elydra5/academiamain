@@ -30,12 +30,12 @@ export class Login implements OnInit {
     password: ''
   };
 
-  registerData = {
-    email: '',
-    username: '',
-    password: '',
-    passwordConfirm: ''
-  };
+  // registerData = {
+  //   email: '',
+  //   username: '',
+  //   password: '',
+  //   passwordConfirm: ''
+  // };
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -50,10 +50,10 @@ export class Login implements OnInit {
     this.errorMessage = '';
   }
 
-  switchToRegister() {
-    this.isLoginMode = false;
-    this.errorMessage = '';
-  }
+  // switchToRegister() {
+  //   this.isLoginMode = false;
+  //   this.errorMessage = '';
+  // }
 
   onLogin() {
     if (this.isLoading) return;
@@ -66,7 +66,7 @@ export class Login implements OnInit {
       password: this.loginData.password
     }).subscribe({
       next: (response: any) => {
-        console.log('Login successful:', response);
+        // console.log('Login successful:', response);
         
         const token = response.token || response.access_token || response.jwt;
         
@@ -87,40 +87,40 @@ export class Login implements OnInit {
     });
   }
 
-  onRegister() {
-    if (this.isLoading) return;
-    
-    if (this.registerData.password !== this.registerData.passwordConfirm) {
-      this.errorMessage = 'Passwords do not match';
-      return;
-    }
+  // onRegister() {
+  //   if (this.isLoading) return;
+  //   
+  //   if (this.registerData.password !== this.registerData.passwordConfirm) {
+  //     this.errorMessage = 'Passwords do not match';
+  //     return;
+  //   }
 
-    this.isLoading = true;
-    this.errorMessage = '';
+  //   this.isLoading = true;
+  //   this.errorMessage = '';
 
-    this.http.post(`${this.apiUrl}/api/image.pngregister`, {
-      email: this.registerData.email,
-      username: this.registerData.username,
-      password: this.registerData.password
-    }).subscribe({
-      next: (response: any) => {
-        console.log('Registration successful:', response);
-        this.isLoading = false;
-        this.isLoginMode = true;
-        this.loginData.username = this.registerData.username;
-        this.registerData = {
-          email: '',
-          username: '',
-          password: '',
-          passwordConfirm: ''
-        };
-        alert('Registration successful! Please log in.');
-      },
-      error: (error) => {
-        console.error('Registration error:', error);
-        this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
-      }
-    });
-  }
+  //   this.http.post(`${this.apiUrl}/api/image.pngregister`, {
+  //     email: this.registerData.email,
+  //     username: this.registerData.username,
+  //     password: this.registerData.password
+  //   }).subscribe({
+  //     next: (response: any) => {
+  //       console.log('Registration successful:', response);
+  //       this.isLoading = false;
+  //       this.isLoginMode = true;
+  //       this.loginData.username = this.registerData.username;
+  //       this.registerData = {
+  //         email: '',
+  //         username: '',
+  //         password: '',
+  //         passwordConfirm: ''
+  //       };
+  //       alert('Registration successful! Please log in.');
+  //     },
+  //     error: (error) => {
+  //       console.error('Registration error:', error);
+  //       this.isLoading = false;
+  //       this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+  //     }
+  //   });
+  // }
 }

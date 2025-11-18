@@ -109,17 +109,16 @@
   z-index: 1;
 }
 
-.tab-indicator.register {
+/* .tab-indicator.register {
   transform: translateX(100%);
-}
+} */
 
 .form-container {
   position: relative;
   min-height: 650px;
 }
 
-.login-form,
-.register-form {
+.login-form {
   padding: 2.5rem;
   animation: slideIn 0.3s ease-out;
   position: absolute;
@@ -131,13 +130,30 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 }
+/* .register-form {
+  padding: 2.5rem;
+  animation: slideIn 0.3s ease-out;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+} */
 
-.register-form {
+/* .register-form {
   min-height: 650px;
+} */
+
+.login-form.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-20px);
 }
 
-.login-form.hidden,
-.register-form.hidden {
+/* .register-form.hidden {
   opacity: 0;
   pointer-events: none;
   transform: translateX(-20px);
@@ -145,7 +161,7 @@
 
 .register-form.hidden {
   transform: translateX(20px);
-}
+} */
 
 @keyframes slideIn {
   from {
@@ -311,10 +327,12 @@
     border-radius: 16px;
   }
 
-  .login-form,
-  .register-form {
+  .login-form {
     padding: 2rem 1.5rem;
   }
+  /* .register-form {
+    padding: 2rem 1.5rem;
+  } */
 
   .form-title {
     font-size: 1.5rem;

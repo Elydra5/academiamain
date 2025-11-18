@@ -140,7 +140,7 @@ export class Groups implements OnInit {
       next: (createdGroup: any) => {
         this.groups.push(createdGroup);
         this.isCreateModalOpen = false;
-        console.log('[groups] created', createdGroup);
+        // console.log('[groups] created', createdGroup);
         this.loadGroups();
       },
       error: (error) => {

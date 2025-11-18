@@ -38,9 +38,9 @@ export class User implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log('Route params:', params);
+      // console.log('Route params:', params);
       const username = params['username'];
-      console.log('Username from route:', username);
+      // console.log('Username from route:', username);
       if (username) {
         this.loadUser(username);
       } else {
@@ -51,13 +51,13 @@ export class User implements OnInit {
 
   loadUser(username: string) {
     const url = `${this.apiUrl}/${username}`;
-    console.log('Loading user from URL:', url);
+    // console.log('Loading user from URL:', url);
     
     this.http.get(url).subscribe({
       next: (response: any) => {
-        console.log('User loaded successfully:', response);
+        // console.log('User loaded successfully:', response);
         const userData = Array.isArray(response) ? response[0] : response;
-        console.log('Extracted user object:', userData);
+        // console.log('Extracted user object:', userData);
         
         this.user = {
           username: userData?.username || '',
@@ -69,7 +69,7 @@ export class User implements OnInit {
           last_login: userData?.last_login || null,
           status: userData?.status !== undefined ? userData.status : 1
         };
-        console.log('user after assignment:', this.user);
+        // console.log('user after assignment:', this.user);
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -93,7 +93,7 @@ export class User implements OnInit {
     const u = userToEdit ?? this.user;
     this.editingUser = { ...u }; 
     this.isEditModalOpen = true;
-    console.log('[user] edit clicked', u);
+    // console.log('[user] edit clicked', u);
   }
 
   onSave() {
@@ -102,7 +102,7 @@ export class User implements OnInit {
       next: (updatedUser: any) => {
         this.user = { ...updatedUser };
         this.isEditModalOpen = false;
-        console.log('[user] saved', updatedUser);
+        // console.log('[user] saved', updatedUser);
         this.loadUser(this.user.username);
       },
       error: (error) => {
@@ -127,7 +127,7 @@ export class User implements OnInit {
     const url = `${this.apiUrl}/${u.username}`;
     this.http.delete(url).subscribe({
       next: () => {
-        console.log('[user] deleted', u);
+        // console.log('[user] deleted', u);
         alert(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/users']);
       },
@@ -142,7 +142,7 @@ export class User implements OnInit {
     if (!dateString) return this.translate.instant('USER.NEVER');
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
+      return date.toLocaleDateString('es-ES', { 
         year: 'numeric', 
         month: '2-digit', 
         day: '2-digit',

@@ -69,7 +69,7 @@ export class Users implements OnInit {
       next: (createdUser: any) => {
         this.users.push(createdUser);
         this.isCreateModalOpen = false;
-        console.log('[users] created', createdUser);
+        // console.log('[users] created', createdUser);
         this.loadUsers();
       },
       error: (error) => {

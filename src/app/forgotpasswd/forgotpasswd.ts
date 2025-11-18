@@ -31,7 +31,7 @@ export class Forgotpasswd {
       email: this.email
     }).subscribe({
       next: (response: any) => {
-        console.log('Password reset email sent:', response);
+        // console.log('Password reset email sent:', response);
         this.isLoading = false;
         this.successMessage = 'Password reset link has been sent to your email.';
         this.email = '';

@@ -107,7 +107,7 @@ export class Students implements OnInit {
         this.students.push(createdStudent);
         this.updatePagination();
         this.isCreateModalOpen = false;
-        console.log('[students] created', createdStudent);
+        // console.log('[students] created', createdStudent);
       },
       error: (error) => {
         console.error('Error creating student:', error);
@@ -126,8 +126,8 @@ export class Students implements OnInit {
   }
 
   onStudentClick(studentId: number) {
-    console.log('Student clicked, ID:', studentId);
-    console.log('Navigating to:', `/student/${studentId}`);
+    // console.log('Student clicked, ID:', studentId);
+    // console.log('Navigating to:', `/student/${studentId}`);
     this.router.navigate(['/student', studentId]);
   }
 }

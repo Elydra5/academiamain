@@ -40,9 +40,9 @@ export class Group implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      console.log('Route params:', params);
+      // console.log('Route params:', params);
       const groupId = +params['id'];
-      console.log('Group ID from route:', groupId);
+      // console.log('Group ID from route:', groupId);
       if (groupId && !isNaN(groupId)) {
         this.loadGroup(groupId);
       } else {
@@ -53,15 +53,15 @@ export class Group implements OnInit {
 
   loadGroup(id: number) {
     const url = `${this.apiUrl}/${id}`;
-    console.log('Loading group from URL:', url);
+    // console.log('Loading group from URL:', url);
     
     this.http.get(url).subscribe({
       next: (response: any) => {
-        console.log('Group loaded successfully:', response);
+        // console.log('Group loaded successfully:', response);
         const groupInfo = Array.isArray(response.groupInfo) ? response.groupInfo[0] : response.groupInfo;
-        console.log('Extracted groupInfo:', groupInfo);
+        // console.log('Extracted groupInfo:', groupInfo);
         const students = response.students || [];
-        console.log('Extracted students:', students);
+        // console.log('Extracted students:', students);
         
         this.group = {
           id: groupInfo?.id || 0,
@@ -77,8 +77,8 @@ export class Group implements OnInit {
         
         this.students = students;
         
-        console.log('group after assignment:', this.group);
-        console.log('students after assignment:', this.students);
+        // console.log('group after assignment:', this.group);
+        // console.log('students after assignment:', this.students);
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -104,7 +104,7 @@ export class Group implements OnInit {
     const g = groupToEdit ?? this.group;
     this.editingGroup = { ...g }; 
     this.isEditModalOpen = true;
-    console.log('[group] edit clicked', g);
+    // console.log('[group] edit clicked', g);
   }
 
   onSave() {
@@ -112,7 +112,7 @@ export class Group implements OnInit {
       next: (updatedGroup: any) => {
         this.group = { ...updatedGroup };
         this.isEditModalOpen = false;
-        console.log('[group] saved', updatedGroup);
+        // console.log('[group] saved', updatedGroup);
         this.loadGroup(this.group.id);
       },
       error: (error) => {
@@ -135,7 +135,7 @@ export class Group implements OnInit {
 
     this.http.delete(`${this.apiUrl}/${g.id}`).subscribe({
       next: () => {
-        console.log('[group] deleted', g);
+        // console.log('[group] deleted', g);
         alert(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/groups']);
       },

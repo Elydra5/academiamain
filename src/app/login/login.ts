@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -18,12 +18,16 @@ export class Login implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private translate: TranslateService
+  ) {
+    this.currentLang = this.translate.getCurrentLang() || 'es';
+  }
 
   isLoginMode = true;
   isLoading = false;
   errorMessage = '';
+  currentLang = 'es';
 
   loginData = {
     username: '',
@@ -85,6 +89,11 @@ export class Login implements OnInit {
         this.errorMessage = error.error?.message || 'Login failed. Please check your credentials.';
       }
     });
+  }
+
+  switchLanguage(lang: string) {
+    this.translate.use(lang);
+    this.currentLang = lang;
   }
 
   // onRegister() {

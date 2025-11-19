@@ -48,9 +48,6 @@ export class Group implements OnInit {
     this.route.params.subscribe(params => {
       const groupIdParam = params['id'];
       if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
-        if (this.currentGroupId) {
-          this.loadGroup(this.currentGroupId);
-        }
         return;
       }
       

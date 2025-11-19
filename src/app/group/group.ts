@@ -14,6 +14,7 @@ import { NotificationService } from '../services/notification';
 })
 export class Group implements OnInit {
   private apiUrl = 'https://academia.tokyohost.eu:3000/groups';
+  private adminUrl = 'https://academia.tokyohost.eu:3000/admin';
   
   constructor(
     private route: ActivatedRoute,
@@ -37,10 +38,12 @@ export class Group implements OnInit {
   };
 
   students: any[] = [];
+  teachers: any[] = [];
   isEditModalOpen = false;
   editingGroup: any = {};
 
   ngOnInit() {
+    this.loadTeachers();
     this.route.params.subscribe(params => {
       // console.log('Route params:', params);
       const groupId = +params['id'];
@@ -49,6 +52,18 @@ export class Group implements OnInit {
         this.loadGroup(groupId);
       } else {
         console.error('Invalid group ID:', groupId);
+      }
+    });
+  }
+
+  loadTeachers() {
+    this.http.get<any[]>(this.adminUrl).subscribe({
+      next: (users) => {
+        this.teachers = users || [];
+      },
+      error: (error) => {
+        console.error('Error loading teachers:', error);
+        this.teachers = [];
       }
     });
   }
@@ -104,9 +119,23 @@ export class Group implements OnInit {
 
   onEdit(groupToEdit?: any) {
     const g = groupToEdit ?? this.group;
-    this.editingGroup = { ...g }; 
+    this.editingGroup = { ...g };
     this.isEditModalOpen = true;
     // console.log('[group] edit clicked', g);
+  }
+
+  formatDateForInput(dateString: string): string {
+    if (!dateString) return '';
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return '';
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    } catch {
+      return '';
+    }
   }
 
   onSave() {

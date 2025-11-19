@@ -47,12 +47,16 @@ export class Group implements OnInit {
     this.loadTeachers();
     this.route.params.subscribe(params => {
       const groupIdParam = params['id'];
-      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
+
+      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null' || groupIdParam === undefined || groupIdParam === null) {
+        if (this.currentGroupId) {
+          return;
+        }
         return;
       }
       
       const groupId = +groupIdParam;
-      if (groupId && !isNaN(groupId) && groupId > 0) {
+      if (!isNaN(groupId) && groupId > 0) {
         this.currentGroupId = groupId;
         this.loadGroup(groupId);
       }
@@ -71,19 +75,25 @@ export class Group implements OnInit {
     });
   }
 
-  loadGroup(id: number) {
-    if (!id || isNaN(id) || id <= 0) {
+  loadGroup(id: number | string | null | undefined) {
+    if (id === undefined || id === null || id === 'undefined' || id === 'null') {
       return;
     }
     
-    const url = `${this.apiUrl}/${id}`;
+    const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+    if (isNaN(numericId) || numericId <= 0) {
+      return;
+    }
+    
+    const url = `${this.apiUrl}/${numericId}`;
     
     this.http.get(url).subscribe({
       next: (response: any) => {
         const groupInfo = Array.isArray(response.groupInfo) ? response.groupInfo[0] : response.groupInfo;
         const students = response.students || [];
         
-        const groupIdFromResponse = groupInfo?.id || id;
+        const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+        const groupIdFromResponse = groupInfo?.id || numericId;
         this.currentGroupId = groupIdFromResponse;
         
         this.group = {
@@ -103,8 +113,9 @@ export class Group implements OnInit {
       },
       error: (error) => {
         console.error('Error loading group:', error);
+        const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
         this.group = {
-          id: id,
+          id: numericId,
           name: "Group Not Found",
           short_description: "",
           moodle_id: null,

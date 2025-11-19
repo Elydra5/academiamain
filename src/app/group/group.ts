@@ -45,27 +45,9 @@ export class Group implements OnInit {
   ngOnInit() {
     this.loadTeachers();
     this.route.params.subscribe(params => {
-      console.log('[FRONTEND] Route params changed:', params);
-      const groupIdParam = params['id'];
-      console.log('[FRONTEND] Raw groupId param:', groupIdParam, 'type:', typeof groupIdParam);
-      
-      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
-        console.error('[FRONTEND ERROR] ===== INVALID ROUTE PARAM =====');
-        console.error('[FRONTEND ERROR] Route param id is:', groupIdParam);
-        console.error('[FRONTEND ERROR] All params:', params);
-        console.error('[FRONTEND ERROR] This is a FRONTEND/ROUTING issue - invalid route param');
-        return;
-      }
-      
-      const groupId = +groupIdParam;
-      console.log('[FRONTEND] Parsed groupId from route:', groupId);
-      
+      const groupId = +params['id'];
       if (groupId && !isNaN(groupId) && groupId > 0) {
         this.loadGroup(groupId);
-      } else {
-        console.error('[FRONTEND ERROR] ===== INVALID GROUP ID FROM ROUTE =====');
-        console.error('[FRONTEND ERROR] Invalid group ID from route:', groupId, 'params:', params);
-        console.error('[FRONTEND ERROR] This is a FRONTEND/ROUTING issue - cannot parse groupId');
       }
     });
   }
@@ -83,30 +65,16 @@ export class Group implements OnInit {
   }
 
   loadGroup(id: number) {
-    console.log('[FRONTEND] loadGroup called with id:', id, 'type:', typeof id);
-    console.trace('[FRONTEND] loadGroup call stack');
-    
     if (!id || isNaN(id) || id <= 0) {
-      console.error('[FRONTEND ERROR] loadGroup called with invalid id:', id);
-      console.error('[FRONTEND ERROR] Current this.group:', this.group);
-      console.error('[FRONTEND ERROR] Current this.editingGroup:', this.editingGroup);
       return;
     }
     
     const url = `${this.apiUrl}/${id}`;
-    console.log('[FRONTEND] Loading group from URL:', url);
     
     this.http.get(url).subscribe({
       next: (response: any) => {
-        console.log('[FRONTEND] Group loaded successfully:', response);
         const groupInfo = Array.isArray(response.groupInfo) ? response.groupInfo[0] : response.groupInfo;
-        console.log('[FRONTEND] Extracted groupInfo:', groupInfo);
         const students = response.students || [];
-        
-        if (!groupInfo || !groupInfo.id) {
-          console.error('[FRONTEND ERROR] groupInfo is missing or has no id:', groupInfo);
-          console.error('[FRONTEND ERROR] Full response:', response);
-        }
         
         this.group = {
           id: groupInfo?.id || id,
@@ -121,25 +89,10 @@ export class Group implements OnInit {
         };
 
         this.students = students;
-        console.log('[FRONTEND] Group updated, this.group.id:', this.group.id);
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('[FRONTEND ERROR] Error loading group with id:', id);
-        console.error('[FRONTEND ERROR] Error object:', error);
-        console.error('[FRONTEND ERROR] Error URL:', error.url);
-        console.error('[FRONTEND ERROR] Error status:', error.status);
-        console.error('[FRONTEND ERROR] Current this.group:', this.group);
-        console.error('[FRONTEND ERROR] Current this.editingGroup:', this.editingGroup);
-        
-        if (error.url && error.url.includes('undefined')) {
-          console.error('[FRONTEND ERROR] ===== UNDEFINED ID DETECTED =====');
-          console.error('[FRONTEND ERROR] This is a FRONTEND issue - undefined id was passed to loadGroup');
-        } else if (error.status === 404) {
-          console.error('[FRONTEND ERROR] ===== 404 NOT FOUND =====');
-          console.error('[FRONTEND ERROR] This could be a BACKEND issue - group not found, or FRONTEND issue - wrong id');
-        }
-        
+        console.error('Error loading group:', error);
         this.group = {
           id: id,
           name: "Group Not Found",
@@ -195,39 +148,16 @@ export class Group implements OnInit {
     
     const groupId = this.editingGroup.id;
     if (!groupId) {
-      console.error('Cannot update group: id is undefined');
       this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       return;
     }
     
-    console.log('[FRONTEND] onSave called with groupId:', groupId);
-    console.log('[FRONTEND] updateData:', updateData);
-    console.log('[FRONTEND] Current this.group:', this.group);
-    console.log('[FRONTEND] Current this.editingGroup:', this.editingGroup);
-    
     this.http.patch(`${this.apiUrl}/${groupId}`, updateData).subscribe({
       next: (response: any) => {
-        console.log('[FRONTEND] Update response received:', response);
-        console.log('[FRONTEND] Response type:', typeof response);
-        console.log('[FRONTEND] Response has groupInfo?', !!response?.groupInfo);
-        console.log('[FRONTEND] Response groupInfo:', response?.groupInfo);
-        
         const groupData = response?.groupInfo || response;
-        console.log('[FRONTEND] Extracted groupData:', groupData);
-        
         if (groupData) {
-          const finalId = groupData.id || groupId;
-          console.log('[FRONTEND] Setting finalId to:', finalId, '(from groupData.id:', groupData.id, 'or groupId:', groupId, ')');
-          
-          if (!finalId) {
-            console.error('[FRONTEND ERROR] ===== NO ID AVAILABLE =====');
-            console.error('[FRONTEND ERROR] groupData:', groupData);
-            console.error('[FRONTEND ERROR] groupId:', groupId);
-            console.error('[FRONTEND ERROR] This is a BACKEND issue - response missing id');
-          }
-          
           this.group = {
-            id: finalId,
+            id: groupData.id || groupId,
             name: groupData.name || '',
             short_description: groupData.short_description || '',
             moodle_id: groupData.moodle_id || null,
@@ -240,31 +170,13 @@ export class Group implements OnInit {
           if (response.students) {
             this.students = response.students;
           }
-          console.log('[FRONTEND] Group updated successfully, this.group.id:', this.group.id);
-        } else {
-          console.error('[FRONTEND ERROR] ===== NO GROUP DATA IN RESPONSE =====');
-          console.error('[FRONTEND ERROR] Full response:', response);
-          console.error('[FRONTEND ERROR] This is a BACKEND issue - response structure is wrong');
-          
-          this.group = {
-            ...this.group,
-            ...this.editingGroup,
-            id: groupId
-          };
-          console.log('[FRONTEND] Group updated (fallback), this.group.id:', this.group.id);
         }
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
-        this.cdr.detectChanges();
+        this.loadGroup(groupId);
       },
       error: (error) => {
-        console.error('[FRONTEND ERROR] ===== PATCH REQUEST FAILED =====');
-        console.error('[FRONTEND ERROR] Error updating group:', error);
-        console.error('[FRONTEND ERROR] Error URL:', error.url);
-        console.error('[FRONTEND ERROR] Error status:', error.status);
-        console.error('[FRONTEND ERROR] Error message:', error.message);
-        console.error('[FRONTEND ERROR] Requested groupId:', groupId);
-        console.error('[FRONTEND ERROR] This is a BACKEND issue - PATCH request failed');
+        console.error('Error updating group:', error);
         this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });

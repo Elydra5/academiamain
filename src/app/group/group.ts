@@ -91,9 +91,8 @@ export class Group implements OnInit {
           teacher: groupInfo?.teacher || '',
           long_description: groupInfo?.long_description || ''
         };
-        
+
         this.students = students;
-        
         // console.log('group after assignment:', this.group);
         // console.log('students after assignment:', this.students);
         this.cdr.detectChanges();
@@ -155,12 +154,27 @@ export class Group implements OnInit {
     }
     
     this.http.patch(`${this.apiUrl}/${this.editingGroup.id}`, updateData).subscribe({
-      next: (updatedGroup: any) => {
-        this.group = { ...updatedGroup };
+      next: (response: any) => {
+        const groupData = response?.groupInfo || response;
+        if (groupData) {
+          this.group = {
+            id: groupData.id || this.editingGroup.id,
+            name: groupData.name || '',
+            short_description: groupData.short_description || '',
+            moodle_id: groupData.moodle_id || null,
+            start_date: groupData.start_date || '',
+            end_date: groupData.end_date || '',
+            status: groupData.status || '',
+            teacher: groupData.teacher || '',
+            long_description: groupData.long_description || ''
+          };
+          if (response.students) {
+            this.students = response.students;
+          }
+        }
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
-        // console.log('[group] saved', updatedGroup);
-        this.loadGroup(this.group.id);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error updating group:', error);

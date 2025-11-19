@@ -45,13 +45,11 @@ export class Group implements OnInit {
   ngOnInit() {
     this.loadTeachers();
     this.route.params.subscribe(params => {
-      // console.log('Route params:', params);
       const groupId = +params['id'];
-      // console.log('Group ID from route:', groupId);
-      if (groupId && !isNaN(groupId)) {
+      if (groupId && !isNaN(groupId) && groupId > 0) {
         this.loadGroup(groupId);
       } else {
-        console.error('Invalid group ID:', groupId);
+        console.error('Invalid group ID from route:', groupId, params);
       }
     });
   }
@@ -69,6 +67,10 @@ export class Group implements OnInit {
   }
 
   loadGroup(id: number) {
+    if (!id || isNaN(id)) {
+      console.error('loadGroup called with invalid id:', id);
+      return;
+    }
     const url = `${this.apiUrl}/${id}`;
     // console.log('Loading group from URL:', url);
     
@@ -162,10 +164,12 @@ export class Group implements OnInit {
     
     this.http.patch(`${this.apiUrl}/${groupId}`, updateData).subscribe({
       next: (response: any) => {
+        console.log('Update response:', response);
         const groupData = response?.groupInfo || response;
         if (groupData) {
+          const finalId = groupData.id || groupId;
           this.group = {
-            id: groupData.id || groupId,
+            id: finalId,
             name: groupData.name || '',
             short_description: groupData.short_description || '',
             moodle_id: groupData.moodle_id || null,
@@ -178,12 +182,14 @@ export class Group implements OnInit {
           if (response.students) {
             this.students = response.students;
           }
+          console.log('Group updated, id:', this.group.id);
         } else {
           this.group = {
             ...this.group,
             ...this.editingGroup,
             id: groupId
           };
+          console.log('Group updated (fallback), id:', this.group.id);
         }
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));

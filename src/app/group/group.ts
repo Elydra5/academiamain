@@ -46,12 +46,26 @@ export class Group implements OnInit {
     this.loadTeachers();
     this.route.params.subscribe(params => {
       console.log('[FRONTEND] Route params changed:', params);
-      const groupId = +params['id'];
+      const groupIdParam = params['id'];
+      console.log('[FRONTEND] Raw groupId param:', groupIdParam, 'type:', typeof groupIdParam);
+      
+      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
+        console.error('[FRONTEND ERROR] ===== INVALID ROUTE PARAM =====');
+        console.error('[FRONTEND ERROR] Route param id is:', groupIdParam);
+        console.error('[FRONTEND ERROR] All params:', params);
+        console.error('[FRONTEND ERROR] This is a FRONTEND/ROUTING issue - invalid route param');
+        return;
+      }
+      
+      const groupId = +groupIdParam;
       console.log('[FRONTEND] Parsed groupId from route:', groupId);
+      
       if (groupId && !isNaN(groupId) && groupId > 0) {
         this.loadGroup(groupId);
       } else {
+        console.error('[FRONTEND ERROR] ===== INVALID GROUP ID FROM ROUTE =====');
         console.error('[FRONTEND ERROR] Invalid group ID from route:', groupId, 'params:', params);
+        console.error('[FRONTEND ERROR] This is a FRONTEND/ROUTING issue - cannot parse groupId');
       }
     });
   }

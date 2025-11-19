@@ -41,12 +41,22 @@ export class Group implements OnInit {
   teachers: any[] = [];
   isEditModalOpen = false;
   editingGroup: any = {};
+  private currentGroupId: number | null = null;
 
   ngOnInit() {
     this.loadTeachers();
     this.route.params.subscribe(params => {
-      const groupId = +params['id'];
+      const groupIdParam = params['id'];
+      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
+        if (this.currentGroupId) {
+          this.loadGroup(this.currentGroupId);
+        }
+        return;
+      }
+      
+      const groupId = +groupIdParam;
       if (groupId && !isNaN(groupId) && groupId > 0) {
+        this.currentGroupId = groupId;
         this.loadGroup(groupId);
       }
     });
@@ -76,8 +86,11 @@ export class Group implements OnInit {
         const groupInfo = Array.isArray(response.groupInfo) ? response.groupInfo[0] : response.groupInfo;
         const students = response.students || [];
         
+        const groupIdFromResponse = groupInfo?.id || id;
+        this.currentGroupId = groupIdFromResponse;
+        
         this.group = {
-          id: groupInfo?.id || id,
+          id: groupIdFromResponse,
           name: groupInfo?.name || '',
           short_description: groupInfo?.short_description || '',
           moodle_id: groupInfo?.moodle_id || null,
@@ -155,25 +168,34 @@ export class Group implements OnInit {
     this.http.patch(`${this.apiUrl}/${groupId}`, updateData).subscribe({
       next: (response: any) => {
         const groupData = response?.groupInfo || response;
+        const finalId = groupData?.id || groupId || this.group.id || this.currentGroupId;
+        this.currentGroupId = finalId;
+        
         if (groupData) {
           this.group = {
-            id: groupData.id || groupId,
-            name: groupData.name || '',
-            short_description: groupData.short_description || '',
-            moodle_id: groupData.moodle_id || null,
-            start_date: groupData.start_date || '',
-            end_date: groupData.end_date || '',
-            status: groupData.status || '',
-            teacher: groupData.teacher || '',
-            long_description: groupData.long_description || ''
+            id: finalId,
+            name: groupData.name || this.group.name || '',
+            short_description: groupData.short_description || this.group.short_description || '',
+            moodle_id: groupData.moodle_id !== undefined ? groupData.moodle_id : this.group.moodle_id,
+            start_date: groupData.start_date || this.group.start_date || '',
+            end_date: groupData.end_date || this.group.end_date || '',
+            status: groupData.status || this.group.status || '',
+            teacher: groupData.teacher || this.group.teacher || '',
+            long_description: groupData.long_description || this.group.long_description || ''
           };
           if (response.students) {
             this.students = response.students;
           }
+        } else {
+          this.group = {
+            ...this.group,
+            ...this.editingGroup,
+            id: finalId
+          };
         }
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
-        this.loadGroup(groupId);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error updating group:', error);

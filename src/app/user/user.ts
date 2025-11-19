@@ -109,16 +109,15 @@ export class User implements OnInit {
       }
     }
     if (updateData.password === '' || updateData.password === null || updateData.password === undefined) {
-      delete updateData.password;
+      delete updateData.password; 
     }
 
     this.http.patch(url, updateData).subscribe({
-      next: (updatedUser: any) => {
-        this.user = { ...updatedUser };
+      next: (response: any) => {
+        this.user = response;
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
-        // console.log('[user] saved', updatedUser);
-        this.loadUser(this.user.username);
+        this.loadUser(this.user.username || this.editingUser.username);
       },
       error: (error) => {
         console.error('Error updating user:', error);

@@ -80,7 +80,7 @@ export class Calendar implements OnInit {
 
   getMonthName(month: number): string {
     const date = new Date(2024, month - 1, 1);
-    return date.toLocaleDateString(this.translate.currentLang === 'es' ? 'es-ES' : 'en-US', { month: 'long' });
+    return date.toLocaleDateString(this.translate.getCurrentLang() === 'es' ? 'es-ES' : 'en-US', { month: 'long' });
   }
 
   getWeekStart(date: Date): Date {
@@ -110,13 +110,13 @@ export class Calendar implements OnInit {
 
   loadCalendarData() {
     this.isLoading = true;
-    
+
     let params = new HttpParams();
-    
+
     if (this.viewMode === 'month') {
       params = params.set('year', this.currentYear.toString());
       params = params.set('month', this.currentMonth.toString());
-      
+
       this.http.get<{ success: boolean; data: CalendarData }>(`${this.apiUrl}/month`, { params }).subscribe({
         next: (response) => {
           if (response.success && response.data) {
@@ -264,7 +264,7 @@ export class Calendar implements OnInit {
   }
 
   formatTime(date: Date): string {
-    return date.toLocaleTimeString(this.translate.currentLang === 'es' ? 'es-ES' : 'en-US', { 
+    return date.toLocaleTimeString(this.translate.getCurrentLang() === 'es' ? 'es-ES' : 'en-US', { 
       hour: '2-digit', 
       minute: '2-digit' 
     });

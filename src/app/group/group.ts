@@ -153,12 +153,19 @@ export class Group implements OnInit {
       updateData.end_date = this.formatDateForInput(updateData.end_date);
     }
     
-    this.http.patch(`${this.apiUrl}/${this.editingGroup.id}`, updateData).subscribe({
+    const groupId = this.editingGroup.id;
+    if (!groupId) {
+      console.error('Cannot update group: id is undefined');
+      this.notificationService.error(this.translate.instant('COMMON.ERROR'));
+      return;
+    }
+    
+    this.http.patch(`${this.apiUrl}/${groupId}`, updateData).subscribe({
       next: (response: any) => {
         const groupData = response?.groupInfo || response;
         if (groupData) {
           this.group = {
-            id: groupData.id || this.editingGroup.id,
+            id: groupData.id || groupId,
             name: groupData.name || '',
             short_description: groupData.short_description || '',
             moodle_id: groupData.moodle_id || null,
@@ -171,6 +178,12 @@ export class Group implements OnInit {
           if (response.students) {
             this.students = response.students;
           }
+        } else {
+          this.group = {
+            ...this.group,
+            ...this.editingGroup,
+            id: groupId
+          };
         }
         this.isEditModalOpen = false;
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));

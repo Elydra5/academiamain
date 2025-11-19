@@ -100,7 +100,19 @@ export class User implements OnInit {
 
   onSave() {
     const url = `${this.apiUrl}/${this.editingUser.username}`;
-    this.http.patch(url, this.editingUser).subscribe({
+    const updateData: any = {};
+    const editableFields = ['username', 'password', 'role', 'first_name', 'last_name', 'email', 'moodle_id', 'status'];
+
+    for (const field of editableFields) {
+      if (this.editingUser.hasOwnProperty(field)) {
+        updateData[field] = this.editingUser[field];
+      }
+    }
+    if (updateData.password === '' || updateData.password === null || updateData.password === undefined) {
+      delete updateData.password;
+    }
+
+    this.http.patch(url, updateData).subscribe({
       next: (updatedUser: any) => {
         this.user = { ...updatedUser };
         this.isEditModalOpen = false;

@@ -47,11 +47,7 @@ export class Group implements OnInit {
     this.loadTeachers();
     this.route.params.subscribe(params => {
       const groupIdParam = params['id'];
-
-      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null' || groupIdParam === undefined || groupIdParam === null) {
-        if (this.currentGroupId) {
-          return;
-        }
+      if (!groupIdParam || groupIdParam === 'undefined' || groupIdParam === 'null') {
         return;
       }
       
@@ -68,32 +64,25 @@ export class Group implements OnInit {
       next: (users) => {
         this.teachers = users || [];
       },
-      error: (error) => {
-        console.error('Error loading teachers:', error);
+      error: () => {
         this.teachers = [];
       }
     });
   }
 
-  loadGroup(id: number | string | null | undefined) {
-    if (id === undefined || id === null || id === 'undefined' || id === 'null') {
+  loadGroup(id: number) {
+    if (!id || isNaN(id) || id <= 0) {
       return;
     }
     
-    const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
-    if (isNaN(numericId) || numericId <= 0) {
-      return;
-    }
-    
-    const url = `${this.apiUrl}/${numericId}`;
+    const url = `${this.apiUrl}/${id}`;
     
     this.http.get(url).subscribe({
       next: (response: any) => {
         const groupInfo = Array.isArray(response.groupInfo) ? response.groupInfo[0] : response.groupInfo;
         const students = response.students || [];
         
-        const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
-        const groupIdFromResponse = groupInfo?.id || numericId;
+        const groupIdFromResponse = groupInfo?.id || id;
         this.currentGroupId = groupIdFromResponse;
         
         this.group = {
@@ -111,11 +100,9 @@ export class Group implements OnInit {
         this.students = students;
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.error('Error loading group:', error);
-        const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
+      error: () => {
         this.group = {
-          id: numericId,
+          id: id,
           name: "Group Not Found",
           short_description: "",
           moodle_id: null,
@@ -140,7 +127,6 @@ export class Group implements OnInit {
       this.editingGroup.end_date = this.formatDateForInput(this.editingGroup.end_date);
     }
     this.isEditModalOpen = true;
-    // console.log('[group] edit clicked', g);
   }
 
   formatDateForInput(dateString: string): string {
@@ -208,8 +194,7 @@ export class Group implements OnInit {
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         this.cdr.detectChanges();
       },
-      error: (error) => {
-        console.error('Error updating group:', error);
+      error: () => {
         this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });
@@ -228,12 +213,10 @@ export class Group implements OnInit {
 
     this.http.delete(`${this.apiUrl}/${g.id}`).subscribe({
       next: () => {
-        // console.log('[group] deleted', g);
         this.notificationService.success(this.translate.instant('COMMON.SUCCESS'));
         this.router.navigate(['/groups']);
       },
-      error: (error) => {
-        console.error('Error deleting group:', error);
+      error: () => {
         this.notificationService.error(this.translate.instant('COMMON.ERROR'));
       }
     });

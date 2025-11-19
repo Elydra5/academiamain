@@ -120,6 +120,12 @@ export class Group implements OnInit {
   onEdit(groupToEdit?: any) {
     const g = groupToEdit ?? this.group;
     this.editingGroup = { ...g };
+    if (this.editingGroup.start_date) {
+      this.editingGroup.start_date = this.formatDateForInput(this.editingGroup.start_date);
+    }
+    if (this.editingGroup.end_date) {
+      this.editingGroup.end_date = this.formatDateForInput(this.editingGroup.end_date);
+    }
     this.isEditModalOpen = true;
     // console.log('[group] edit clicked', g);
   }
@@ -139,7 +145,16 @@ export class Group implements OnInit {
   }
 
   onSave() {
-    this.http.patch(`${this.apiUrl}/${this.editingGroup.id}`, this.editingGroup).subscribe({
+    const updateData = { ...this.editingGroup };
+    
+    if (updateData.start_date) {
+      updateData.start_date = this.formatDateForInput(updateData.start_date);
+    }
+    if (updateData.end_date) {
+      updateData.end_date = this.formatDateForInput(updateData.end_date);
+    }
+    
+    this.http.patch(`${this.apiUrl}/${this.editingGroup.id}`, updateData).subscribe({
       next: (updatedGroup: any) => {
         this.group = { ...updatedGroup };
         this.isEditModalOpen = false;

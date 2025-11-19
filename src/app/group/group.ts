@@ -164,26 +164,29 @@ export class Group implements OnInit {
     
     this.http.patch(`${this.apiUrl}/${groupId}`, updateData).subscribe({
       next: (response: any) => {
-        const groupData = response?.groupInfo || response;
-        const finalId = groupData?.id || groupId || this.group.id || this.currentGroupId;
-        this.currentGroupId = finalId;
+        const groupInfo = response?.groupInfo || response;
+        const students = response?.students || this.students;
         
-        if (groupData) {
+        if (groupInfo) {
+          const finalId = groupInfo.id || groupId || this.group.id || this.currentGroupId;
+          this.currentGroupId = finalId;
+          
           this.group = {
             id: finalId,
-            name: groupData.name || this.group.name || '',
-            short_description: groupData.short_description || this.group.short_description || '',
-            moodle_id: groupData.moodle_id !== undefined ? groupData.moodle_id : this.group.moodle_id,
-            start_date: groupData.start_date || this.group.start_date || '',
-            end_date: groupData.end_date || this.group.end_date || '',
-            status: groupData.status || this.group.status || '',
-            teacher: groupData.teacher || this.group.teacher || '',
-            long_description: groupData.long_description || this.group.long_description || ''
+            name: groupInfo.name || this.group.name || '',
+            short_description: groupInfo.short_description || this.group.short_description || '',
+            moodle_id: groupInfo.moodle_id !== undefined ? groupInfo.moodle_id : this.group.moodle_id,
+            start_date: groupInfo.start_date || this.group.start_date || '',
+            end_date: groupInfo.end_date || this.group.end_date || '',
+            status: groupInfo.status || this.group.status || '',
+            teacher: groupInfo.teacher || this.group.teacher || '',
+            long_description: groupInfo.long_description || this.group.long_description || ''
           };
-          if (response.students) {
-            this.students = response.students;
-          }
+          
+          this.students = students;
         } else {
+          const finalId = groupId || this.group.id || this.currentGroupId;
+          this.currentGroupId = finalId;
           this.group = {
             ...this.group,
             ...this.editingGroup,
